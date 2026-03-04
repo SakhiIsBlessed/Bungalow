@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bungalow Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --body-color: #fdf8f2;
+      --text-color: #2B2B2B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      font-family: SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: normal;
+      background: var(--body-color);
+      color: var(--text-color);
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #1E3D2F;
+      padding: 15px 30px;
+      z-index: 100;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
+    .navbar .logo {
+      font-family: 'Cinzel', serif;
+      color: #F4A300;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .navbar ul li a.active,
+    .navbar ul li a:hover {
+      color: #F4A300;
+      /* Highlight color */
+    }
+
+
+    #cart-button {
+      background: #F4A300;
+      color: #1E3D2F;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 8px 11px;
+      border-radius: 100px;
+      /* border: 2px solid #fff; */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 20px;
+      transition: background 0.3s ease;
+    }
+
+    #cart-button:hover {
+      background: #e49300;
+      transform: translateY(-2px);
+    }
+
+    #cart-count {
+      /* background:#e49300; */
+      color: #000;
+      padding: 2px 8px;
+      font-size: 14px;
+      border-radius: 30px;
+      font-weight: bold;
+    }
+
+    /* Hero Section */
+    .hero {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-top: 62px;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    #heroTrack {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease;
+      will-change: transform;
+    }
+
+    .hero-slide {
+      min-width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-text {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      color: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      max-width: 600px;
+      z-index: 1;
+      display: none;
+      text-align: left;
+    }
+
+    .hero-text p {
+      font-family: 'Dancing Script', cursive;
+      font-size: 44px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero-btn {
+      background: none;
+      color: white;
+      padding: 10px 0;
+      text-decoration: underline;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #hero-section {
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.5s ease;
+      will-change: transform;
+    }
+
+    .arrow-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .arrow {
+      font-size: 20px;
+      background-color: #F4A300;
+      color: #1E3D2F;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Sections */
+    .section {
+      width: 100%;
+      padding: 60px 30px;
+    }
+
+    /* Menu Tabs */
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-bottom: 40px;
+    }
+
+    .menu-tabs h2 {
+      font-size: 36px;
+      font-family: Georgia, serif;
+      font-weight: 500;
+      color: gray;
+      cursor: pointer;
+      position: relative;
+      padding-bottom: 10px;
+      transition: color 0.3s ease;
+    }
+
+    .menu-tabs h2:hover,
+    .menu-tabs h2.active {
+      color: #000;
+    }
+
+    .menu-tabs h2.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background-color: #000;
+      border-radius: 50%;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      opacity: 0;
+      transform: translateY(20px) translateX(30px);
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: absolute;
+      width: 100%;
+    }
+
+    .tab-content.active {
+      opacity: 1;
+      transform: translateY(0) translateX(0);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .tab-content.slide-right {
+      animation: slideInFromRight 0.5s ease;
+    }
+
+    .tab-content.slide-left {
+      animation: slideInFromLeft 0.5s ease;
+    }
+
+    @keyframes slideInFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(60px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-60px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Menu Cards */
+    .menu-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .menu-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      max-width: 320px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .menu-card:hover {
+      transform: none !important;
+    }
+
+    .menu-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .menu-card h3,
+    .menu-card p,
+    .menu-card .order-btn {
+      font-family: SweetSansText, sans-serif;
+      color: var(--text-color);
+    }
+
+    .menu-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 16px 16px 6px;
+      color: #1E3D2F;
+    }
+
+    .menu-card p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 16px 12px;
+    }
+
+    .menu-card .order-btn {
+      margin: 0 16px 16px;
+      font-size: 14px;
+      color: #1E3D2F;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .menu-card .order-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Review Section */
+    .review-section {
+      background-color: #f9f8ee;
+      padding: 70px 10px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .review-header h3 {
+      font-size: 20px;
+      color: #1E3D2F;
+    }
+
+    .review-header a {
+      color: #1E3D2F;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .review-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .review-card {
+      flex: 1 1 30%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px;
+      border-radius: 16px;
+      background-color: #ffe0ecac;
+      transition: background-color 0.4s ease;
+    }
+
+    .review-card:hover {
+      background-color: #3c7a5e75;
+    }
+
+    .review-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-left: 15px;
+      margin-top: 5px;
+    }
+
+    .review-text {
+      flex: 1;
+    }
+
+    .review-card .upper {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .review-card h4 {
+      font-size: 14px;
+      margin: 6px 0;
+    }
+
+    .review-card p {
+      font-size: 13px;
+      color: #333;
+    }
+
+    .review-card p:last-child {
+      margin-top: 8px;
+    }
+
+    .review-card .review-btn {
+      margin: 5 16px 16px;
+      font-size: 14px;
+      color: #1E3D2F;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .review-card .review-btn:hover {
+      text-decoration: underline;
+    }
+
+
+    /* Split Section */
+    .split-section {
+      display: flex;
+      align-items: stretch;
+      height: 90vh;
+      background: #f4e9d8;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .text-side {
+      flex: 1;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #111;
+    }
+
+    .subheading {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #1E3D2F;
+      margin-bottom: 20px;
+      margin-top: -10px;
+    }
+
+    .main-heading {
+      font-size: 46px;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 18px;
+      line-height: 1.4;
+      max-width: 480px;
+      margin-bottom: 30px;
+    }
+
+    .follow-btn {
+      color: #1E3D2F;
+      text-decoration: underline;
+      font-size: 16px;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .video-side {
+      flex: 1;
+      position: relative;
+      height: 100%;
+    }
+
+    .kitchen-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+
+
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: #fffafc;
+      /* Soft pastel pink/cream background */
+      padding: 30px;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #d6336c;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .modal-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .modal-content ul li {
+      background: #ffeef5;
+      padding: 10px 15px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .modal-content p {
+      margin: 5px 0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background-color: #ff70a6;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .modal-content button:hover {
+      background-color: #e64980;
+    }
+
+    .modal-content .close {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 26px;
+      color: #ff5c8d;
+      cursor: pointer;
+    }
+
+    .remove-item {
+      color: red;
+      font-weight: bold;
+      margin-left: 10px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      background: #ffeef5;
+      padding: 10px;
+      border-radius: 12px;
+    }
+
+    .cart-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .item-details {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-controls button {
+      background-color: #ff70a6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .cart-controls button:hover {
+      background-color: #e64980;
+    }
+
+    .remove-item {
+      color: red;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+
+
+    /* Footer */
+    .footer {
+      background-color: #1E3D2F;
+      text-align: center;
+      padding: 15px;
+      color: #F9F5EC;
+      font-size: 14px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .text-side {
+        padding: 30px 20px;
+      }
+
+      .description {
+        max-width: 100%;
+      }
+
+      .menu-tabs {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .menu-card {
+        max-width: 90%;
+      }
+
+      .review-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .review-card img {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+
+      <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+        alt="leaf icon" style="max-height: 28px;" />
+
+
+      <span style="color: #F4A300;">BUNGALOW</span>
+
+
+      <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+        alt="leaf icon" style="max-height: 28px;" />
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="review.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div id="cart-button" onclick="showCart()">
+        🛒 <span id="cart-count">0</span>
+      </div>
+    </nav>
+
+  </header>
+  <!-- 🛒 Cart Modal -->
+  <div id="cartModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeCart()">&times;</span>
+      <h3>🧾 Your Order Summary</h3>
+      <p id="emptyCartMessage" style="display: none; text-align:center; padding: 20px;">🛒 Your cart is currently empty.</p>
+
+      <ul id="cartItemsList"></ul>
+      <p id="cartSubtotal"></p>
+      <p id="cartGST"></p>
+      <p id="cartTotal"></p>
+      <button onclick="placeOrder()">Order Now</button>
+    </div>
+  </div>
+
+
+
+
+  <section class="hero" id="hero-section">
+    <div class="hero-text" id="heroText">
+      <p id="heroCaption">Healthy Starts Here</p>
+      <a href="menu.html" class="hero-btn" id="heroButton">Explore</a>
+    </div>
+
+    <div class="arrow-container">
+      <button class="arrow left" onclick="prevImage()">❮</button>
+      <button class="arrow right" onclick="nextImage()">❯</button>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="menu-tabs">
+      <h2 class="tab-link active" onclick="showTab('salads', this)">Salads</h2>
+      <h2 class="tab-link" onclick="showTab('warm', this)">Warm Bowls</h2>
+      <h2 class="tab-link" onclick="showTab('sides', this)">Sides</h2>
+    </div>
+
+    <div id="salads" class="tab-content active">
+      <div class="menu-grid">
+        <div class="menu-card">
+          <img
+            src="https://www.eatingwell.com/thmb/CcLY-9Ru3OWpd5k_V-hoxlk4whg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chopped-power-salad-with-chicken-hero-1x1-0178-475bbf1bbd884d5d97fc236b8975dff2.jpg"
+            alt="Salad 1">
+          <h3>Power Chicken Salad</h3>
+          <p>Nutritious greens with grilled chicken, almonds, and lemon vinaigrette.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+        <div class="menu-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRbhAyS943KGw1YvxdSw8zFWuaQo9xAXAm0A&s"
+            alt="Salad 2">
+          <h3>Rainbow Veggie Bowl</h3>
+          <p>Colorful mix of vegetables, corn, quinoa, and tangy dressing.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+        <div class="menu-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQITUygYzUPA4A_huExN20svcJbwaUq9675kg&s"
+            alt="Salad 3">
+          <h3>Chickpea Crunch</h3>
+          <p>Roasted chickpeas, arugula, and cucumber tossed in herb dressing.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="warm" class="tab-content">
+      <div class="menu-grid">
+        <div class="menu-card">
+          <img src="https://www.aline-made.com/wp-content/uploads/2024/12/Paneer-Butter-Masala-1-scaled.jpg"
+            alt="Paneer Bowl">
+          <h3>Paneer Butter Bowl</h3>
+          <p>Rich paneer in buttery tomato gravy with basmati rice & herbs.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+        <div class="menu-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjNWdAb4dRQSzDEVF-VEuB1lHU2uQzapEZHw&s"
+            alt="Spicy Curry">
+          <h3>Spicy Lentil Bowl</h3>
+          <p>Fiery red lentil curry with veggies & warm naan on the side.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+        <div class="menu-card">
+          <img src="https://hot-thai-kitchen.com/wp-content/uploads/2022/04/green-curry-new-sq-3.jpg" alt="Green Curry">
+          <h3>Thai Green Curry</h3>
+          <p>Fragrant coconut curry with veggies and steamed jasmine rice.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="sides" class="tab-content">
+      <div class="menu-grid">
+        <div class="menu-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXN3jJvHSTgWUufHGdGRnZwmcSxmIFXiLe5g&s"
+            alt="Masala Corn">
+          <h3>Masala Corn</h3>
+          <p>Steamed corn tossed with lemon, salt, pepper & Indian spices.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+        <div class="menu-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6xreUyGk-Ta5g-HRt2YpN3VZbwpR7bSLR-A&s"
+            alt="Cheesy Garlic Bread">
+          <h3>Cheesy Garlic Bread</h3>
+          <p>Toasted baguette topped with garlic butter and melted cheese.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+        <div class="menu-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfe6Dm0KG506dSlMpJ9qUXTw-JwbtAXyF4_A&s"
+            alt="Onion Rings">
+          <h3>Onion Rings</h3>
+          <p>Crispy onion rings coated in seasoned batter, deep-fried to perfection.</p>
+          <a href="menu.html" class="order-btn">Order Now →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+
+    let previousTabIndex = 0;
+
+    function showTab(tabId, element) {
+      const contents = document.querySelectorAll('.tab-content');
+      const tabs = document.querySelectorAll('.tab-link');
+      const newIndex = Array.from(tabs).indexOf(element);
+
+      const direction = newIndex > previousTabIndex ? 'right' : 'left';
+      previousTabIndex = newIndex;
+
+      contents.forEach(content => {
+        content.classList.remove('active', 'slide-left', 'slide-right');
+      });
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      const newTab = document.getElementById(tabId);
+      newTab.classList.add('active', direction === 'right' ? 'slide-right' : 'slide-left');
+      element.classList.add('active');
+    }
+
+    const menuCards = document.querySelectorAll(".menu-card");
+    menuCards.forEach(card => {
+      card.addEventListener("mousemove", e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = -(y - centerY) / 12;
+        const rotateY = (x - centerX) / 12;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "rotateX(0deg) rotateY(0deg)";
+        card.style.transition = "transform 0.3s ease";
+      });
+
+      card.addEventListener("mousedown", () => {
+        card.style.transition = "none";
+      });
+
+      card.addEventListener("mouseup", () => {
+        card.style.transition = "transform 0.3s ease";
+      });
+    });
+
+
+    const tabIds = ['salads', 'warm', 'sides'];
+    let currentTabIndex = 0;
+    let lastSwitchTime = 0;
+
+    document.addEventListener("mousemove", (e) => {
+      const screenWidth = window.innerWidth;
+      const threshold = 50;
+      const now = Date.now();
+      if (now - lastSwitchTime < 1000) return;
+
+      if (e.clientX < threshold) {
+        currentTabIndex = (currentTabIndex - 1 + tabIds.length) % tabIds.length;
+        lastSwitchTime = now;
+      } else if (e.clientX > screenWidth - threshold) {
+        currentTabIndex = (currentTabIndex + 1) % tabIds.length;
+        lastSwitchTime = now;
+      } else {
+        return;
+      }
+
+      const newTabId = tabIds[currentTabIndex];
+      const newTab = document.querySelector(`.tab-link[onclick*="${newTabId}"]`);
+      showTab(newTabId, newTab);
+    });
+  </script>
+
+
+  <section style="background-color: #f4a30093; padding: 25px 10px;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+
+
+      <p
+        style="text-transform: uppercase; font-size: 13px; letter-spacing: 1px; margin: -10px 0 20px; color: #1E3D2F; font-family: 'Inter', system-ui, sans-serif;">
+        BUNGALOW REFRESH
+      </p>
+
+
+      <div
+        style="display: flex; flex-wrap: nowrap; align-items: flex-start; justify-content: space-between; gap: 60px;">
+
+
+        <div style="flex: 1 1 50%; max-width: 500px; font-family: 'Inter', system-ui, sans-serif; color: #2B2B2B;">
+          <h2 style="font-size: 46px; line-height: 1.2; margin-bottom: 40px;">
+            All the ways we<br> keep you hydrated 🍋
+          </h2>
+
+          <p><strong>Fruit Infusion</strong><br>
+            Naturally flavored water with lemon, berries, and fresh herbs – crafted fresh every morning.</p><br>
+
+          <p><strong>Mint & Cucumber Elixir</strong><br>
+            Cool, crisp and refreshing – perfect for digestion and detox.</p><br>
+
+          <p><strong>Hydration on the Go</strong><br>
+            Order a bottle or refill your own. We’re all about hydration without waste 🌿</p>
+
+          <a href="gallery.html"
+            style="display: inline-block; margin-top: 80px; color: inherit; font-size: inherit; font-weight: inherit; text-decoration: none;color: #000;">
+            View More →
+          </a>
+
+        </div>
+
+
+        <div style="flex: 1 1 50%; max-width: 500px; display: flex; justify-content: center;">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShV-muyfA81XrCJIve5yJUOPc0xpzrfrjwpg&s"
+            alt="Infused Water"
+            style="width: 80%; max-width: 440px; border-radius: 20px; box-shadow: 0 4px 30px rgba(0,0,0,0.06);" />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="review-section">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+
+      <div class="review-header">
+        <h3>THE LATEST</h3>
+        <a href="review.html">READ MORE →</a>
+      </div>
+
+
+      <div class="review-cards">
+
+
+        <div class="review-card">
+          <div class="review-text">
+            <p class="upper">THE INDIAN EXPRESS</p>
+            <h4>“A tribute to tradition — Vikas Khanna’s last masterpiece.”</h4>
+            <p>A soulful collaboration between Chef Vikas Khanna & Jimmy Rizvi celebrates India’s culinary heritage with
+              elegance.</p>
+            <p><a href="review.html" class="review-btn">Read more →</a></p>
+          </div>
+          <img
+            src="https://www.nyctourism.com/_next/image/?q=75&url=https%3A%2F%2Fimages.ctfassets.net%2F1aemqu6a6t65%2F6hPTcZN3CisPs6QmMIJpt9%2F98f54a07e6e0c1f4d3d5ad78417cb02d%2FBungalow-Manhattan-NYC-Photo-Lanna-Apisukh-7.jpg%3Fh%3D%26w%3D1200%26fit%3Dfill%26f%3Dcenter%26q%3D75%26fm%3Dwebp&w=3840"
+            alt="Bungalow NYC">
+        </div>
+
+
+        <div class="review-card">
+          <div class="review-text">
+            <p class="upper">SONAM KAPOOR</p>
+            <h4>“Dining here felt like coming home in a dream.”</h4>
+            <p>Actress Sonam Kapoor shares her nostalgic experience at our restaurant, praising the warmth and flavors.
+            </p>
+            <p><a href="review.html" class="review-btn">Read more →</a></p>
+          </div>
+          <img
+            src="https://curlytales.com/wp-content/uploads/2021/11/258815504_1105517246850955_3300902223270046039_n-4.jpg"
+            alt="Celebrity Review">
+        </div>
+
+
+        <div class="review-card">
+          <div class="review-text">
+            <p class="upper">VOGUE LIFESTYLE</p>
+            <h4>“India’s most beautiful restaurant of 2024.”</h4>
+            <p>With interiors designed by Shaila Rizvi, our space has redefined modern Indian elegance and charm.</p>
+            <p><a href="review.html" class="review-btn">Read more →</a></p>
+          </div>
+          <img
+            src="https://assets.architecturaldigest.in/photos/671f4498bab720c3b573ea2e/16%3A9/w_2560%2Cc_limit/feature%2520image.jpg"
+            alt="Vogue Feature">
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <section
+    style="background-color: #f4a30093; padding: 25px 10px; font-family: SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div style="max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden;">
+
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <p style="text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: #1E3D2F;">FAN FAVORITES</p>
+        <div>
+          <span id="prevBtn" style="cursor: pointer; font-size: 20px; margin-right: 10px;">←</span>
+          <span id="nextBtn" style="cursor: pointer; font-size: 20px;">→</span>
+        </div>
+      </div>
+
+
+      <div id="card-wrapper" style="display: flex; transition: transform 0.5s ease;">
+
+
+        <div class="card"
+          style="flex: 0 0 100%; display: flex; flex-wrap: nowrap; gap: 50px; align-items: center; box-sizing: border-box;">
+
+
+          <div style="flex: 1; min-width: 0;">
+            <h2
+              style="font-size: 46px; margin-bottom: 30px; font-family: SweetSans, SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+              Yogurt Kabab – The Iconic Favorite ⭐
+            </h2>
+            <p><strong>Velvety. Crispy. Unforgettable.</strong><br>
+              A delicate balance of hung curd, finely ground spices, and a golden crust — our Yogurt Kabab is where
+              tradition meets indulgence.</p><br>
+            <p><strong>Chef Vikas Khanna’s Signature Touch</strong><br>
+              Created with inspiration from Indian royal kitchens, it melts in your mouth while packing bold, aromatic
+              flavors.</p><br>
+            <p><strong>Celebrated Nationwide</strong><br>
+              Featured on Good Morning America, this dish is now a must-try experience at Bungalow NYC.</p>
+            <a href="menu.html"
+              style="display: inline-block; margin-top: 30px; color: #000; text-decoration: none;">Order Now →</a>
+          </div>
+
+
+          <div style="flex: 1; display: flex; justify-content: center;">
+            <img
+              src="https://preview.redd.it/indian-food-at-vikas-khannas-restaurant-in-nyc-v0-vwp93tmrr3nd1.jpg?width=640&crop=smart&auto=webp&s=e065e1ce22822f49f0e5a1fbf4c456cea231d218"
+              alt="Yogurt Kabab"
+              style="width: 62%; max-width: 500px; border-radius: 20px; box-shadow: 0 4px 30px rgba(0,0,0,0.06);" />
+          </div>
+        </div>
+
+
+
+        <div class="card"
+          style="flex: 0 0 100%; display: flex; gap: 40px; align-items: center; box-sizing: border-box;">
+          <div style="flex: 1;">
+            <h2
+              style="font-size: 46px; margin-bottom: 20px; font-family: SweetSans, SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+              A Walk Through Indian Heritage 🪔
+            </h2>
+            <p><strong>Crafted by Shaila Rizvi</strong><br>
+              The interiors at Bungalow NYC are a tribute to Indian royalty and classic club charm — a rich palette of
+              culture, nostalgia, and comfort.</p><br>
+            <p><strong>Modern Indian Elegance</strong><br>
+              With plush velvet seating, vintage photographs, and hand-carved accents, every corner tells a story of
+              homegrown sophistication.</p><br>
+            <p><strong>Praised by Vogue</strong><br>
+              Featured as “India’s Most Beautiful Restaurant of 2024,” this space is both luxurious and grounded in
+              tradition.</p>
+            <a href="menu.html"
+              style="display: inline-block; margin-top: 30px; color: #000; text-decoration: none;">Order Now →</a>
+          </div>
+          <div>
+            <img
+              src="https://images.squarespace-cdn.com/content/v1/65983d57438d713cfc579485/3e583899-0fac-4aea-a56f-6b35774654e9/Screenshot%2B2024-03-19%2Bat%2B9.14.45%E2%80%AFPM.png"
+              alt="Interior Design"
+              style="width: 100%; max-width: 520px; border-radius: 20px; box-shadow: 0 4px 30px rgba(0,0,0,0.06);" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const wrapper = document.getElementById("card-wrapper");
+    let cards = Array.from(document.querySelectorAll(".card"));
+    let currentIndex = 1;
+
+    // Clone first & last
+    const firstClone = cards[0].cloneNode(true);
+    const lastClone = cards[cards.length - 1].cloneNode(true);
+
+    // Add classes to clones (optional for debugging)
+    firstClone.classList.add("clone");
+    lastClone.classList.add("clone");
+
+    // Insert clones
+    wrapper.prepend(lastClone);
+    wrapper.append(firstClone);
+
+    // Update cards list
+    cards = Array.from(wrapper.children);
+
+    // Set initial position to real first card
+    wrapper.style.transform = `translateX(-${100 * currentIndex}%)`;
+
+    function goToSlide(index) {
+      wrapper.style.transition = "transform 0.5s ease";
+      wrapper.style.transform = `translateX(-${100 * index}%)`;
+    }
+
+    function jumpToReal(index) {
+      wrapper.style.transition = "none";
+      wrapper.style.transform = `translateX(-${100 * index}%)`;
+    }
+
+    function nextSlide() {
+      if (currentIndex >= cards.length - 1) return;
+      currentIndex++;
+      goToSlide(currentIndex);
+    }
+
+    function prevSlide() {
+      if (currentIndex <= 0) return;
+      currentIndex--;
+      goToSlide(currentIndex);
+    }
+
+    // Transition end – loop logic
+    wrapper.addEventListener("transitionend", () => {
+      if (cards[currentIndex].classList.contains("clone")) {
+        if (currentIndex === cards.length - 1) {
+          currentIndex = 1;
+          jumpToReal(currentIndex);
+        }
+        if (currentIndex === 0) {
+          currentIndex = cards.length - 2;
+          jumpToReal(currentIndex);
+        }
+      }
+    });
+
+    // Drag/swipe logic
+    let startX = 0;
+    let isDragging = false;
+
+    wrapper.addEventListener("mousedown", e => {
+      startX = e.clientX;
+      isDragging = true;
+    });
+
+    wrapper.addEventListener("mousemove", e => {
+      if (!isDragging) return;
+      const diff = e.clientX - startX;
+      wrapper.style.transform = `translateX(calc(-${currentIndex * 100}% + ${diff}px))`;
+    });
+
+    wrapper.addEventListener("mouseup", e => {
+      isDragging = false;
+      const diff = e.clientX - startX;
+
+      if (diff < -20) nextSlide();
+      else if (diff > 20) prevSlide();
+      else goToSlide(currentIndex);
+    });
+
+    wrapper.addEventListener("mouseleave", () => {
+      if (isDragging) {
+        isDragging = false;
+        goToSlide(currentIndex);
+      }
+    });
+
+    // Touch support
+    wrapper.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+    });
+
+    wrapper.addEventListener("touchend", e => {
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+
+      if (diff < -20) nextSlide();
+      else if (diff > 20) prevSlide();
+      else goToSlide(currentIndex);
+    });
+    // Arrow button click listeners
+    document.getElementById("prevBtn").addEventListener("click", prevSlide);
+    document.getElementById("nextBtn").addEventListener("click", nextSlide);
+  </script>
+
+  </script>
+
+
+  <section class="split-section">
+    <div class="text-side">
+      <p class="subheading"
+        style="font-family: SweetSans, SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        IN THE LAB
+      </p>
+
+      <h2 class="main-heading"
+        style="font-family: SweetSans, SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        Inside Chef Khanna’s Flavor Studio
+      </h2>
+
+      <p class="description"
+        style="font-family: SweetSansText, SweetSans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        Watch Chef Vikas Khanna bring magic to the kitchen at Bungalow NYC as he crafts a unique Roasted Pineapple
+        Curry.
+        From slow-roasting fresh pineapple to layering bold Indian spices, this dish is a masterclass in modern
+        Indian cooking.
+        Dive into the textures, aromas, and storytelling behind every bite.
+      </p>
+
+      <a href="contact.html" class="follow-btn"
+        style="font-family: SweetSansText, SweetSans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        Follow Us →
+      </a>
+    </div>
+
+
+
+    <div class="video-side">
+      <video width="900" height="800" autoplay muted loop>
+        <source src="videos/roasted-curry.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+    </div>
+  </section>
+
+  <section style="background-color: #fdf8ed; padding: 40px 20px; border-top: 1px solid #ddd;">
+    <div style="max-width: 1100px; margin: auto; display: flex; flex-wrap: wrap; align-items: stretch;">
+
+      <!-- Left Side -->
+<div style="flex: 1; min-width: 300px; padding-right: 30px;">
+  <h4
+    style="text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: #1E3D2F; margin-bottom: 12px;">
+    JOIN OUR NEWSLETTER</h4>
+  <p style="font-size: 16px; color: #333; margin-bottom: 12px;">Sign up for exclusive promos, new menu drops,
+    store openings, and more.</p>
+
+  <form id="newsletterForm" style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <input type="email" id="email" placeholder="Email Address" required
+      style="flex: 1; min-width: 180px; padding: 12px 16px; border: 1px solid #222; border-radius: 6px; font-size: 14px;" />
+    
+    <button type="submit"
+      style="border: 1px solid #222; background-color: transparent; color: #222; padding: 12px 16px; border-radius: 6px; font-size: 14px; cursor: pointer;">
+      Reserve →
+    </button>
+  </form>
+</div>
+
+<script>
+  document.getElementById("newsletterForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // prevent default form behavior
+
+    const email = document.getElementById("email").value.trim();
+
+    if (email) {
+      // Optional: save email to localStorage or backend via API
+      
+      // Navigate to reservation.html
+      window.location.href = "reservation.html";
+    } else {
+      alert("Please enter your email.");
+    }
+  });
+</script>
+
+
+      <!-- Divider -->
+      <div style="width: 1px; background-color: #ccc; margin: 0 60px 0 198px;"></div>
+
+
+      <!-- Right Side -->
+      <div style="flex: 1; min-width: 240px; text-align: left;">
+        <h4
+          style="text-transform: uppercase; font-size: 13px; letter-spacing: 1px; color: #1E3D2F; margin-bottom: 12px;">
+          DOWNLOAD THE APP</h4>
+        <a href="#"
+          style="display: block; font-size: 16px; color: #1E3D2F; text-decoration: none; margin-bottom: 8px;">iOS → Bungalow Restaurant</a>
+        <a href="#" style="display: block; font-size: 16px; color: #1E3D2F; text-decoration: none;">Android → Bungalow Restaurant</a>
+        
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <footer style="background-color: #1E3D2F; padding: 30px 20px; text-align: center; font-family: 'Inter', sans-serif;">
+    <p style="color: #F9F5EC; font-size: 14px; margin: 0;">
+      &copy; 2025 <span style="color: #F4A300; font-weight: 600;">Bungalow Restaurant</span>. All Rights Reserved.
+    </p>
+
+  </footer>
+
+
+
+  <script>
+    const hero = document.getElementById('hero-section');
+    const heroText = document.getElementById('heroText');
+    const caption = document.getElementById('heroCaption');
+    const button = document.getElementById('heroButton');
+
+    const images = [
+      'https://platform.la.eater.com/wp-content/uploads/sites/26/chorus/uploads/chorus_asset/file/23891676/2018_05_02_Badmaash_094.jpg?crop=0%2C0.062421972534324%2C100%2C99.875156054931&quality=90&strip=all',
+      'https://d3bvfezcznypk7.cloudfront.net/o3assets/blogs/6854202b-c303-4a10-a2f9-7fd615d621c1.jpg',
+      'https://images.squarespace-cdn.com/content/v1/65983d57438d713cfc579485/464f8338-9f64-4823-b99d-055cbf74c3aa/Screenshot+2024-03-19+at+7.49.40%E2%80%AFPM.png',
+      'https://www.foodandwine.com/thmb/ZVHRZ0Kj3g14-zNjQ8tYI9W-yyQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/global-tastemakers-us-restaurants-tatiana-8c5c9ef8f16e4d199277e33cd6d1513c.jpg'
+    ];
+
+    const captions = [
+      "Celebrating diverse flavors and rich cultural cuisines from around the world.",
+      "Savoring the vibrant and flavorful traditions of Indian cuisine.",
+      "Come and experience the rich flavors and vibrant traditions of India.",
+      "A vibrant display of a variety of small, flavorful dishes ready to be enjoyed."
+    ];
+
+    const buttons = ["View More", "Order Now", "Book Now", "Taste Now"];
+    const links = ["menu.html", "menu.html", "menu.html", "menu.html"];
+
+    let currentImage = 0;
+
+    function showImage(index) {
+      hero.style.transition = 'background-image 0.5s ease';
+      hero.style.backgroundImage = `url('${images[index]}')`;
+      heroText.style.display = 'block';
+      caption.textContent = captions[index];
+      button.textContent = buttons[index];
+      button.href = links[index];
+    }
+
+    function nextImage() {
+      currentImage = (currentImage + 1) % images.length;
+      showImage(currentImage);
+    }
+
+    function prevImage() {
+      currentImage = (currentImage - 1 + images.length) % images.length;
+      showImage(currentImage);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      showImage(currentImage);
+
+      let startX = 0;
+      let isDragging = false;
+
+      // Mouse drag start
+      hero.addEventListener("mousedown", e => {
+        startX = e.clientX;
+        isDragging = true;
+        hero.style.transition = "none";
+      });
+
+      // Mouse move
+      hero.addEventListener("mousemove", e => {
+        if (!isDragging) return;
+        const moveX = e.clientX - startX;
+        hero.style.transform = `translateX(${moveX}px)`;
+      });
+
+      // Mouse up
+      hero.addEventListener("mouseup", e => {
+        isDragging = false;
+        const diff = e.clientX - startX;
+        hero.style.transition = "transform 0.5s ease";
+        hero.style.transform = "translateX(0)";
+
+        if (diff < -50) nextImage();
+        else if (diff > 50) prevImage();
+      });
+
+      // Mouse leaves while dragging
+      hero.addEventListener("mouseleave", () => {
+        if (isDragging) {
+          isDragging = false;
+          hero.style.transition = "transform 0.5s ease";
+          hero.style.transform = "translateX(0)";
+        }
+      });
+
+      // Touch drag
+      hero.addEventListener("touchstart", e => {
+        startX = e.touches[0].clientX;
+        hero.style.transition = "none";
+      });
+
+      hero.addEventListener("touchmove", e => {
+        const moveX = e.touches[0].clientX - startX;
+        hero.style.transform = `translateX(${moveX}px)`;
+      });
+
+      hero.addEventListener("touchend", e => {
+        const endX = e.changedTouches[0].clientX;
+        hero.style.transition = "transform 0.5s ease";
+        hero.style.transform = "translateX(0)";
+
+        if (endX < startX - 50) nextImage();
+        else if (endX > startX + 50) prevImage();
+      });
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    });
+  </script>
+
+  </script>
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            const cartCountElem = document.getElementById("cart-count");
+            if (cartCountElem) cartCountElem.innerText = count;
+        }
+
+    function addToCart(name, price, image) {
+      const existingItemIndex = cart.findIndex(item => item.name === name);
+      if (existingItemIndex !== -1) {
+        cart[existingItemIndex].quantity += 1;
+      } else {
+        cart.push({ name, price, image, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      alert(`${name} added to cart!`);
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      showCart();
+    }
+
+    function changeQuantity(index, delta) {
+      if (!cart[index]) return;
+      cart[index].quantity = (cart[index].quantity || 1) + delta;
+      if (cart[index].quantity < 1) {
+        removeFromCart(index);
+      } else {
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        showCart();
+      }
+    }
+
+    function showCart() {
+  const list = document.getElementById('cartItemsList');
+  const cartModal = document.getElementById('cartModal');
+  const subtotalEl = document.getElementById('cartSubtotal');
+  const gstEl = document.getElementById('cartGST');
+  const totalEl = document.getElementById('cartTotal');
+  const emptyMsg = document.getElementById('emptyCartMessage'); // 👈 new
+
+  if (!list || !cartModal || !subtotalEl || !gstEl || !totalEl || !emptyMsg) return;
+
+  list.innerHTML = "";
+
+  if (cart.length === 0) {
+    alert("🛒 Your cart is empty!");
+    subtotalEl.textContent = `Subtotal: ₹0`;
+    gstEl.textContent = `GST (5%): ₹0.00`;
+    totalEl.textContent = `Total: ₹0.00`;
+
+    emptyMsg.style.display = "block"; // 👈 show message
+    cartModal.classList.remove("hidden"); // 👈 still show modal
+    return;
+  }
+
+  emptyMsg.style.display = "none"; // 👈 hide empty message
+
+  let subtotal = 0;
+
+  cart.forEach((item, index) => {
+    const quantity = item.quantity || 1;
+    const itemTotal = item.price * quantity;
+    subtotal += itemTotal;
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div class="cart-item">
+        <img src="${item.image || 'https://via.placeholder.com/50'}" class="cart-img" alt="${item.name}">
+        <div class="item-details">
+          <strong>${item.name}</strong><br>₹${item.price} × ${quantity} = ₹${itemTotal}
+        </div>
+        <div class="cart-controls">
+          <button onclick="changeQuantity(${index}, -1)">–</button>
+          <button onclick="changeQuantity(${index}, 1)">+</button>
+          <span class="remove-item" onclick="removeFromCart(${index})">&times;</span>
+        </div>
+      </div>
+    `;
+    list.appendChild(li);
+  });
+
+  const gst = subtotal * 0.05;
+  const total = subtotal + gst;
+
+  subtotalEl.textContent = `Subtotal: ₹${subtotal}`;
+  gstEl.textContent = `GST (5%): ₹${gst.toFixed(2)}`;
+  totalEl.textContent = `Total: ₹${total.toFixed(2)}`;
+
+  cartModal.classList.remove("hidden");
+}
+
+
+    function closeCart() {
+      document.getElementById("cartModal").classList.add("hidden");
+    }
+
+    function placeOrder() {
+      window.location.href = "reservation.html";
+    }
+
+    // Run at start
+    updateCartCount();
+  </script>
+
+  <script>
+    // Highlight current page in navbar
+    const navLinks = document.querySelectorAll("nav ul li a");
+    const currentPage = window.location.pathname.split("/").pop(); // get file name
+
+    navLinks.forEach(link => {
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add("active");
+      }
+    });
+  </script>
+
+
+
+</body>
+
+</html>
