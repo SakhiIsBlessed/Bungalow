@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bungalow Restaurant</title>
+    <style>
+        :root {
+            --body-color: #fdf8f2;
+            --text-color: #2B2B2B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            font-family: SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: normal;
+            background: var(--body-color);
+            color: var(--text-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1E3D2F;
+            padding: 15px 30px;
+            z-index: 100;
+        }
+
+        .navbar nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+
+        .navbar .logo {
+            font-family: 'Cinzel', serif;
+            color: #F4A300;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+       .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .navbar ul li a.active,
+    .navbar ul li a:hover {
+      color: #F4A300;
+      /* Highlight color */
+    }
+        #cart-button {
+            background: #F4A300;
+            color: #1E3D2F;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 8px 11px;
+            border-radius: 100px;
+            /* border: 2px solid #fff; */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 20px;
+            transition: background 0.3s ease;
+        }
+
+        #cart-button:hover {
+            background: #e49300;
+            transform: translateY(-2px);
+        }
+
+        #cart-count {
+            /* background:#e49300; */
+            color: #000;
+            padding: 2px 8px;
+            font-size: 14px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        section#reservation {
+            padding: 70px 10px 80px;
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .left {
+            flex: 1 1 550px;
+            padding: 50px 40px;
+
+        }
+
+        .right {
+            flex: 1 1 550px;
+            padding: 50px 40px;
+        }
+
+        .left h2 {
+            font-size: 32px;
+            color: var(--primary);
+            font-weight: bold;
+            text-align: center;
+
+        }
+
+        .right h2 {
+            font-size: 32px;
+            color: var(--primary);
+            font-weight: bold;
+
+            text-align: center;
+        }
+
+        .left p,
+        .right p {
+            text-align: center;
+            color: #666;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        form input,
+        textarea,
+        select {
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        form input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        form button {
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form button:hover {
+            background: #163026;
+        }
+
+        #order-summary {
+            background: var(--bg-soft);
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #order-items li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .cart-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .cart-controls {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .cart-controls button {
+            background: #e1e1e1;
+            border: none;
+            padding: 4px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .remove-item {
+            color: red;
+            font-size: 18px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .order-btn {
+            background: var(--accent);
+            color: #000;
+            font-weight: bold;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-btn:hover {
+            background: #d78c00;
+            /* slightly darker accent */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .place-order-btn {
+            background-color: #d78c00;
+            /* e.g. gold, orange, or pastel */
+            color: #000;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-left: 10px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .place-order-btn:hover {
+            background-color: #d78c00;
+            /* darker accent on hover */
+            transform: scale(1.05);
+        }
+
+
+
+        .order-summary-box {
+            background: #fffaf3;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #order-items {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
+
+        .order-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .order-form label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .order-form input,
+        .order-form textarea,
+        .order-form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 4px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fdfdfd;
+        }
+
+        .place-order-btn {
+            background: #f4a300;
+            color: #000;
+            font-weight: bold;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .place-order-btn:hover {
+            background: #e39300;
+        }
+
+        .success-msg {
+            display: none;
+            color: green;
+            text-align: center;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+
+
+        /* Footer */
+        .footer {
+            background-color: #1E3D2F;
+            text-align: center;
+            padding: 15px;
+            color: #F9F5EC;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+                alt="leaf icon" style="max-height: 28px;" />
+
+
+            <span style="color: #F4A300;">BUNGALOW</span>
+
+
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+                alt="leaf icon" style="max-height: 28px;" />
+        </div>
+
+       <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="review.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div id="cart-button" onclick="showCart()">
+        🛒 <span id="cart-count">0</span>
+      </div>
+    </nav>
+    </header>
+    <!-- 🛒 Cart Modal -->
+    <div id="cartModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h3>🧾 Your Order Summary</h3>
+            <ul id="cartItemsList"></ul>
+            <p id="emptyCartMessage" style="display: none; text-align:center; padding: 20px;">🛒 Your cart is currently empty.</p>
+
+            <p id="cartSubtotal"></p>
+            <p id="cartGST"></p>
+            <p id="cartTotal"></p>
+            <button onclick="placeOrder()">Order Now</button>
+        </div>
+    </div>
+
+
+
+
+    <section id="reservation">
+        <div class="container">
+            <div class="left">
+                <h2>Dine In Reservation</h2>
+                <p>Reserve your table and enjoy an unforgettable experience with us ✨</p>
+
+                <form id="reservation-form" onsubmit="submitReservation(event)">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Full Name" required />
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required />
+
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" required />
+
+                    <label for="guests">Guests:</label>
+                    <input type="number" id="guests" placeholder="Number of Guests" min="1" max="20" required />
+
+                    <label for="contact">Contact:</label>
+                    <input type="text" id="contact" placeholder="Email or Phone" required />
+
+                    <button type="submit">Book a Table →</button>
+                </form>
+
+                <p id="confirmation-message" style="display: none;">✅ Reservation confirmed! We’ll reach out to you shortly.</p>
+
+            </div>
+
+
+            <div class="right">
+                <h2>Order Online</h2>
+                <p>View your cart and place your order directly from our online menu 🍽️</p>
+
+                <!-- EMPTY CART PLACEHOLDER -->
+                <section id="empty-cart-placeholder" style="margin-top: 40px; text-align: center;">
+                    <h3 style="color: var(--primary);">🍲 Feeling hungry?</h3>
+                    <p>Explore our delicious dishes and order now!</p>
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 30px 0;">
+                        <!-- Card 1 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://masalaandchai.com/wp-content/uploads/2021/10/Samosa-Chaat-with-Chai-500x500.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Samosa Chaat</p>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZGPFe1ErgSNznHWWtjKRhkIT45fqdNef8-La_yfPaNzRYSgZPUoWwePZkMY8tqjhNpVw&usqp=CAU"" style="
+                                width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">White Peas Gugun</p>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://cdn.zeptonow.com/production///tr:w-600,ar-100-100,pr-true,f-auto,q-80/web/recipes/paneer-tikka-kebab.png"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Tandoori Paneer Tikka</p>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://sinfullyspicy.com/wp-content/uploads/2022/02/Chicken-Malai-Tikka-Featured-Image.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Malai Chicken Tikka</p>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnYnl9jtavEwVBwrxxKfbWAtJlQ9_Y9HIrqA&s"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Spice‑Roasted Pineapple</p>
+                        </div>
+
+                        <!-- Card 6 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://www.cookshideout.com/wp-content/uploads/2017/03/Hyderabadi-Veg-Biryani-Thali-FI.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Vegetable Biryani</p>
+                        </div>
+
+                        <!-- Card 7 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://www.whiskaffair.com/wp-content/uploads/2020/06/Lachha-Paratha-2-3.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Lacha Paratha</p>
+                        </div>
+
+                        <!-- Card 8 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOFiU90TORw2gk-Vdlf4Fe0F29Zvvbhpzd_A&s"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Rose Kulfi Falooda</p>
+                        </div>
+
+                        <!-- Card 9 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://whitebearlakemag.com/wp-content/uploads/2025/04/0525WBL_Stargazer_9445.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Signature Cocktails</p>
+                        </div>
+
+                        <!-- Card 10 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://vegehomecooking.com/wp-content/uploads/2021/06/BoondiRaitaFeaturedImage1.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Boondi Raita</p>
+                        </div>
+                        <!-- Card 11 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnaenMYTv7icKqy9eWJ75nL_LWY9QMW1NyXcc9vKZqYubkdobFhc2N_tKJvrQ_Oh8iyMU&usqp=CAU"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Shrimp Balchao Cones</p>
+                        </div>
+
+                        <!-- Card 12 -->
+                        <div
+                            style="background: #fff; padding: 10px; border-radius: 10px; width: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                            <img src="https://www.platingsandpairings.com/wp-content/uploads/2014/12/instant-pot-butter-chicken-recipe-5-500x500.jpg"
+                                style="width:100%; border-radius: 8px;">
+                            <p style="margin-top: 8px; font-size: 13px; font-weight: 600;">Anarkali Chicken</p>
+                        </div>
+
+
+                        <!-- Repeat similar cards... -->
+                    </div>
+
+                    <a href="menu.html" class="order-btn">Order Now →</a>
+
+                </section>
+
+                <!-- FILLED CART SECTION -->
+                <div id="order-summary" class="order-summary-box">
+                    <ul id="order-items"></ul>
+
+                    <div id="order-total" class="order-total">Total: ₹0</div>
+
+                    <!-- New Fields -->
+                    <div class="order-form">
+                        <label for="order-name">👤 Your Name:</label>
+                        <input type="text" id="order-name" placeholder="Enter your name" required />
+
+                        <label for="order-address">📍 Delivery Address:</label>
+                        <textarea id="order-address" placeholder="Enter delivery address" required></textarea>
+
+                        <label for="order-note">📝 Add a Note:</label>
+                        <textarea id="order-note" placeholder="E.g. Less spicy, add cutlery..." rows="2"></textarea>
+
+                        <label for="payment-method">💳 Payment Method:</label>
+                        <select id="payment-method" required>
+                            <option value="cod">Pay on Delivery (Cash)</option>
+                            <option value="online">Online Payment</option>
+                        </select>
+                    </div>
+
+                    <button onclick="placeOrder()" class="place-order-btn">🛒 Place Order</button>
+
+                    <p id="order-placed-msg" class="success-msg">✅ Order placed successfully!</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer
+        style="background-color: #1E3D2F; padding: 30px 20px; text-align: center; font-family: 'Inter', sans-serif;">
+        <p style="color: #F9F5EC; font-size: 14px; margin: 0;">
+            &copy; 2025 <span style="color: #F4A300; font-weight: 600;">Bungalow Restaurant</span>. All Rights Reserved.
+        </p>
+
+    </footer>
+
+    <!-- <script>
+        function submitReservation(event) {
+            event.preventDefault();
+            document.getElementById("reservation-form").style.display = "none";
+            document.getElementById("confirmation-message").style.display = "block";
+        }
+
+        function displayOrderSummary(cart) {
+            const list = document.getElementById("order-items");
+            list.innerHTML = "";
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const qty = item.qty || 1;
+                const price = item.price * qty;
+                const li = document.createElement("li");
+                li.innerHTML = `
+          <img src="${item.image || 'https://via.placeholder.com/50'}" class="cart-img" alt="${item.name}">
+          <div class="item-details">
+            <strong>${item.name}</strong><br>₹${item.price} × ${qty} = ₹${price}
+          </div>
+          <div class="cart-controls">
+            <button onclick="changeQuantity(${index}, -1)">–</button>
+            <button onclick="changeQuantity(${index}, 1)">+</button>
+            <span class="remove-item" onclick="removeFromCart(${index})">&times;</span>
+          </div>
+        `;
+                list.appendChild(li);
+                subtotal += price;
+            });
+
+            const gst = subtotal * 0.05;
+            const total = subtotal + gst;
+            document.getElementById("order-total").innerHTML = `
+        Subtotal: ₹${subtotal.toFixed(2)}<br>
+        GST (5%): ₹${gst.toFixed(2)}<br>
+        <strong>Total: ₹${total.toFixed(2)}</strong>
+      `;
+            document.getElementById("order-summary").style.display = "block";
+            document.getElementById("empty-cart-placeholder").style.display = "none";
+        }
+
+        function placeOrder() {
+            const name = document.getElementById("order-name").value;
+            const address = document.getElementById("order-address").value;
+            const note = document.getElementById("order-note").value;
+            const payment = document.getElementById("payment-method").value;
+
+            if (!name || !address || !payment) {
+                alert("Please fill in all required fields!");
+                return;
+            }
+
+            // Example logic:
+            alert(`Thank you, ${name}! Your order will be delivered to "${address}" with "${payment}" method.\nNote: ${note || "No special instructions."}`);
+
+            document.getElementById("order-placed-msg").style.display = "block";
+
+            // You can clear the cart or redirect to success page here.
+        }
+
+
+        function changeQuantity(index, delta) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (!cart[index]) return;
+            cart[index].qty = Math.max(1, (cart[index].qty || 1) + delta);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            displayOrderSummary(cart);
+        }
+
+        function removeFromCart(index) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            if (cart.length === 0) {
+                document.getElementById("order-summary").style.display = "none";
+                document.getElementById("empty-cart-placeholder").style.display = "block";
+            } else {
+                displayOrderSummary(cart);
+            }
+        }
+
+        window.onload = function () {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length > 0) {
+                displayOrderSummary(cart);
+            } else {
+                document.getElementById("empty-cart-placeholder").style.display = "block";
+                document.getElementById("order-summary").style.display = "none";
+            }
+        };
+    </script> -->
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            const cartCountElem = document.getElementById("cart-count");
+            if (cartCountElem) cartCountElem.innerText = count;
+        }
+
+        
+      function submitReservation(event) { 
+    event.preventDefault();
+
+    // Hide the form and show confirmation
+    const form = document.getElementById("reservation-form");
+    const confirmation = document.getElementById("confirmation-message");
+
+    form.style.display = "none";
+    confirmation.style.display = "block";
+
+    // ✅ Reset all input fields
+    form.reset();
+
+    // ✅ After 1 second, show the form again in original layout
+    setTimeout(() => {
+        confirmation.style.display = "none";
+
+        // Fully reset form visibility and layout
+        form.style.display = "flex"; // Or 'grid' if your layout uses grid
+        form.style.flexWrap = "wrap"; // Optional: preserve layout
+        form.style.gap = "15px"; // Add your original spacing if needed
+    }, 1000);
+}
+
+
+
+
+
+
+
+
+
+
+
+        function addToCart(name, price, image) {
+            const existing = cart.find((item) => item.name === name);
+            if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+            } else {
+                cart.push({ name, price, image, qty: 1 });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            alert(`${name} added to cart!`);
+        }
+
+        function displayOrderSummary(cart) {
+            const list = document.getElementById("order-items");
+            const totalBox = document.getElementById("order-total");
+            if (!list || !totalBox) return;
+
+            list.innerHTML = "";
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const qty = item.qty || 1;
+                const price = item.price * qty;
+                subtotal += price;
+
+                const li = document.createElement("li");
+                li.innerHTML = `
+         <img src="${item.image || 'https://via.placeholder.com/50'}" class="cart-img" alt="${item.name}">
+          <div class="item-details">
+            <strong>${item.name}</strong><br>₹${item.price} × ${qty} = ₹${price}
+          </div>
+          <div class="cart-controls">
+            <button onclick="changeQuantity(${index}, -1)">–</button>
+            <button onclick="changeQuantity(${index}, 1)">+</button>
+            <span class="remove-item" onclick="removeFromCart(${index})">&times;</span>
+          </div>
+      `;
+                list.appendChild(li);
+            });
+
+            const gst = subtotal * 0.05;
+            const total = subtotal + gst;
+            totalBox.innerHTML = `
+      Subtotal: ₹${subtotal.toFixed(2)}<br>
+      GST (5%): ₹${gst.toFixed(2)}<br>
+      <strong>Total: ₹${total.toFixed(2)}</strong>
+    `;
+
+            document.getElementById("order-summary").style.display = "block";
+            const emptyMsg = document.getElementById("empty-cart-placeholder");
+            if (emptyMsg) emptyMsg.style.display = "none";
+        }
+
+        function changeQuantity(index, delta) {
+            if (!cart[index]) return;
+            cart[index].qty = Math.max(1, (cart[index].qty || 1) + delta);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            displayOrderSummary(cart);
+            updateCartCount();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            if (cart.length === 0) {
+                document.getElementById("order-summary").style.display = "none";
+                const emptyMsg = document.getElementById("empty-cart-placeholder");
+                if (emptyMsg) emptyMsg.style.display = "block";
+            } else {
+                displayOrderSummary(cart);
+            }
+        }
+
+       function placeOrder() {
+    const name = document.getElementById("order-name")?.value;
+    const address = document.getElementById("order-address")?.value;
+    const note = document.getElementById("order-note")?.value || "No special instructions.";
+    const payment = document.getElementById("payment-method")?.value;
+
+    if (!name || !address || !payment) {
+        alert("Please fill in all required fields!");
+        return;
+    }
+
+    alert(`Thank you, ${name}! Your order will be delivered to "${address}" via "${payment}".\nNote: ${note}`);
+    document.getElementById("order-placed-msg").style.display = "block";
+
+    // Clear cart and update localStorage
+    cart = [];
+    localStorage.removeItem("cart");
+    updateCartCount();
+    displayOrderSummary(cart); // Hide summary if empty inside the function
+
+    // Show empty cart message
+    const emptyMsg = document.getElementById("empty-cart-placeholder");
+    const summaryBox = document.getElementById("order-summary");
+    if (emptyMsg) emptyMsg.style.display = "block";
+    if (summaryBox) summaryBox.style.display = "none";
+}
+
+window.onload = function () {
+    updateCartCount();
+    const emptyMsg = document.getElementById("empty-cart-placeholder");
+    const summaryBox = document.getElementById("order-summary");
+
+    if (cart.length > 0) {
+        displayOrderSummary(cart);
+        if (emptyMsg) emptyMsg.style.display = "none";
+        if (summaryBox) summaryBox.style.display = "block";
+    } else {
+        if (emptyMsg) emptyMsg.style.display = "block";
+        if (summaryBox) summaryBox.style.display = "none";
+    }
+};
+
+
+        
+    </script>
+    <script>
+  // Highlight current page in navbar
+  const navLinks = document.querySelectorAll("nav ul li a");
+  const currentPage = window.location.pathname.split("/").pop(); // get file name
+
+  navLinks.forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.classList.add("active");
+    }
+  });
+</script>
+</body>
+
+</html>
