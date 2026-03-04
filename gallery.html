@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Latest Stories</title>
+  <style>
+    :root {
+      --body-color: #fdf8f2;
+      --text-color: #2B2B2B;
+      --primary: #1E3D2F;
+      --accent: #F4A300;
+      --card-bg: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 120px;
+      /* Adjust based on your sticky buttons height */
+      overflow-x: hidden;
+      font-family: SweetSansText, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: normal;
+      background: var(--body-color);
+      color: var(--text-color);
+    
+    }
+/* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #1E3D2F;
+      padding: 15px 30px;
+      z-index: 100;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
+    .navbar .logo {
+      font-family: 'Cinzel', serif;
+      color: #F4A300;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .navbar ul li a.active,
+    .navbar ul li a:hover {
+      color: #F4A300;
+      /* Highlight color */
+    }
+    #cart-button {
+      background: #F4A300;
+      color: #1E3D2F;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 8px 11px;
+      border-radius: 100px;
+      /* border: 2px solid #fff; */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 20px;
+      transition: background 0.3s ease;
+    }
+
+    #cart-button:hover {
+      background: #e49300;
+      transform: translateY(-2px);
+    }
+
+    #cart-count {
+      /* background:#e49300; */
+      color: #000;
+      padding: 2px 8px;
+      font-size: 14px;
+      border-radius: 30px;
+      font-weight: bold;
+    }
+    /* General Body Styles */
+    body {
+      font-family: system-ui, sans-serif;
+      background: var(--body-color);
+      color: var(--text-color);
+      /* padding-top: 90px; */
+      padding-top: 130px;
+      /* Adjust to fit your layout */
+
+    }
+
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: #fffafc;
+      /* Soft pastel pink/cream background */
+      padding: 30px;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #d6336c;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .modal-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .modal-content ul li {
+      background: #ffeef5;
+      padding: 10px 15px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .modal-content p {
+      margin: 5px 0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background-color: #ff70a6;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .modal-content button:hover {
+      background-color: #e64980;
+    }
+
+    .modal-content .close {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 26px;
+      color: #ff5c8d;
+      cursor: pointer;
+    }
+
+    .remove-item {
+      color: red;
+      font-weight: bold;
+      margin-left: 10px;
+      cursor: pointer;
+      float: right;
+    }
+    .cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background: #ffeef5;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.cart-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.item-details {
+  flex: 1;
+  font-size: 14px;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-controls button {
+  background-color: #ff70a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-controls button:hover {
+  background-color: #e64980;
+}
+
+.remove-item {
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+    /* Container to hold both cards side by side */
+    .gallery-section {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      padding: 40px;
+    }
+
+    .gallery-card {
+      display: flex;
+      justify-content: left;
+    }
+
+    .left-card .latest-stories {
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .right-card {
+      justify-content: flex-end;
+    }
+
+    .right-card .latest-stories {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    /* Common styles */
+    .latest-stories {
+      display: flex;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      gap: 30px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .featured-story {
+      flex: 1;
+    }
+
+    .side-stories {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .side-story {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .featured-image {
+      height: 200px;
+      background: #ddd;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .side-image {
+      width: 100px;
+      height: 100px;
+      background-color: #f4f4f4;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tag {
+      color: #999;
+      font-size: 13px;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* Section Title */
+    .menu-section h2 {
+      font-size: 1.8em;
+      color: var(--primary);
+      margin-top: 75px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .menu-section h2 span {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+    }
+
+.section-heading.interiors-heading {
+      margin-top: 0px;
+    }
+    
+    .top-heading {
+
+      text-align: center;
+      padding: 40px 20px 30px;
+      border-bottom: 1px solid #eee;
+
+    }
+
+    .heading-content h1 {
+      font-size: 2.5em;
+      color: #F4A300;
+      margin-bottom: 10px;
+      font-family: 'Georgia', serif;
+      letter-spacing: 1px;
+    }
+
+    .heading-content .tagline {
+      font-size: 1.1em;
+      color: #444;
+      font-style: italic;
+
+    }
+
+
+
+
+    /* Menu Buttons - fixed below navbar */
+    .gallery-buttons {
+      position: fixed;
+      top: 60px;
+      /* Adjust based on navbar height */
+      background: #fff;
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 50px;
+      z-index: 999;
+      border-bottom: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+
+    .gallery-buttons button {
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    .gallery-buttons button:hover {
+      background-color: var(--accent);
+      color: #000;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #1E3D2F;
+      text-align: center;
+      padding: 15px;
+      color: #F9F5EC;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+
+      <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+        alt="leaf icon" style="max-height: 28px;" />
+
+
+      <span style="color: #F4A300;">BUNGALOW</span>
+
+
+      <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+        alt="leaf icon" style="max-height: 28px;" />
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="review.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div id="cart-button" onclick="showCart()">
+        🛒 <span id="cart-count">0</span>
+      </div>
+    </nav>
+  </header>
+  <div class="gallery-buttons">
+    <button onclick="location.href='#interiors'"> Interiors</button>
+    <button onclick="location.href='#food'"> Food</button>
+    <button onclick="location.href='#staff'"> Staff</button>
+    <button onclick="location.href='#events'"> Events</button>
+    <button onclick="location.href='#guests'"> Guests</button>
+    <button onclick="location.href='#branding'">Branding</button>
+    <button onclick="location.href='#awards'"> Awards</button>
+  </div>
+  <!-- 🛒 Cart Modal -->
+  <div id="cartModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeCart()">&times;</span>
+      <h3>🧾 Your Order Summary</h3>
+      <ul id="cartItemsList"></ul>
+      <p id="emptyCartMessage" style="display: none; text-align:center; padding: 20px;">🛒 Your cart is currently empty.</p>
+
+      <p id="cartSubtotal"></p>
+      <p id="cartGST"></p>
+      <p id="cartTotal"></p>
+      <button onclick="placeOrder()">Order Now</button>
+    </div>
+  </div>
+<!-- Stylish Page Heading -->
+<section class="top-heading">
+  <div class="heading-content">
+    <h1>🏛️ Timeless Elegance in Every Corner</h1>
+    <p class="tagline">Step inside the Bungalow • Interiors by Vikas Khanna</p>
+  </div>
+</section>
+
+  <section id="interiors" class="menu-section">
+    <h2 class="section-heading interiors-heading"> Interiors</h2>
+
+    <div class="gallery-section">
+      <!-- Card 1: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://www.designpataki.com/wp-content/uploads/2024/07/Bungalow-Interiors-Shoot-41.jpg"
+              alt="Delicious gourmet dish" class="featured-image" />
+            <span class="tag">Interiors</span>
+            <h3>Bungalow Bliss: A Look Inside Our Elegant Interior</h3>
+            <p>Step into our cozy dining spaces, blending rustic charm with modern elegance. From vintage chandeliers to
+              warm wooden textures — every corner tells a story.</p>
+            <p class="meta">Jul 22, 2025 • 4 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://imgmediagumlet.lbb.in/media/2025/03/67c59f4d2226626b47ecaf25_1741004621323.jpg"
+                alt="Signature pizza" class="side-image" />
+              <div class="side-content">
+                <h4>Top 5 Instagrammable Corners at Bungalow</h4>
+                <p>Design • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOFa7cULhMgreKcGDe273Mk_tL01wTz9M3wA&s"
+                alt="Biryani platter" class="side-image" />
+              <div class="side-content">
+                <h4>Why Our Lounge Seating Feels Like Home</h4>
+                <p>Ambience • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToT5AxwhQAVze6VQR0almSrom9OVkgBqYa8Q&s"
+                alt="Spaghetti and meatballs" class="side-image" />
+              <div class="side-content">
+                <h4>Art & Aesthetics: Walls That Speak</h4>
+                <p>Style • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Right -->
+      <div class="gallery-card right-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDWNT5Do2iV_g7PcTTrZ4XzpdTAaqg5Ibe_g&s"
+              alt="Chicken Tikka Masala" class="featured-image" />
+            <span class="tag">Bar Interiors</span>
+            <h3>Unwind in Style: Inside Our Rustic Bar Corner</h3>
+            <p>Dim lighting, artisanal wood, and ambient music — our bar interior sets the perfect mood for unwinding
+              after a long day.</p>
+            <p class="meta">Jul 20, 2025 • 3 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3scU5JtxTeElUvKhuv4sQkv92WcfqoF9Yzw&s" alt="Paneer Tikka"
+                class="side-image" />
+              <div class="side-content">
+                <h4>Behind the Bar: Craftsmanship Meets Comfort</h4>
+                <p>Decor • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2fbiEeVOoLGVbUPn_BKusFfbuHmn_cnEIsw&s"
+                alt="Bhel Puri" class="side-image" />
+              <div class="side-content">
+                <h4>Lighting That Transforms the Mood</h4>
+                <p>Lighting • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzws2WgCh6ysktFVqxn66rkYm_e0SPVd4qjEiuCjGP1S1OPvfivYX1KAdq9s3qqHAJzMQ&usqp=CAU"
+                alt="Butter Chicken" class="side-image" />
+              <div class="side-content">
+                <h4>Table Setups That Impress</h4>
+                <p>Experience • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://cdn.tatlerasia.com/tatlerasia/i/2024/08/22114205-revolver-interior_cover_1600x1067.jpg"
+              alt="Veg Fried Rice" class="featured-image" />
+            <span class="tag">Private Dining</span>
+            <h3>Our Hidden Gem: The Private Dining Experience</h3>
+            <p>Perfect for intimate dinners or celebrations, our private rooms offer elegance and seclusion with custom
+              design elements.</p>
+            <p class="meta">Jul 18, 2025 • 3 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img
+                src="https://kotart.in/cdn/shop/products/Kotart-Restaurant-Gallery-Wall-Art-Frame-Combo-Set-of-8-5.jpg?v=1697547651&width=1445"
+                alt="Veg Manchurian" class="side-image" />
+              <div class="side-content">
+                <h4>Designed for Privacy & Sophistication</h4>
+                <p>Design • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxDSmwhD3woduUWVSi39D7T8utXts7Cklm1Q&s"
+                alt="Hakka Noodles" class="side-image" />
+              <div class="side-content">
+                <h4>Soft Lighting for Special Moments</h4>
+                <p>Lighting • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm9ITl-gPxzHSV01ub88cT5Tof4-yd9trTZQ&s"
+                alt="Gobi Manchurian" class="side-image" />
+              <div class="side-content">
+                <h4>Luxury in Every Detail</h4>
+                <p>Luxury • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Right -->
+      <div class="gallery-card right-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img
+              src="https://inspiretraveleat.com/wp-content/uploads/2019/03/Lons-At-The-Hermosa-Inn-Best-Restauants-Phoenix.jpg"
+              alt="Veg Thali" class="featured-image" />
+            <span class="tag">Courtyard</span>
+            <h3>Dine Under the Stars: Our Outdoor Courtyard</h3>
+            <p>Our open-air seating with fairy lights and potted greens is perfect for breezy evenings and weekend
+              brunches.</p>
+            <p class="meta">Jul 17, 2025 • 4 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTwJjvapbxoyMigUv2sGAyw1k7M2jDscNkdg&s"
+                alt="Chapati and Curry" class="side-image" />
+              <div class="side-content">
+                <h4>How We Created a Magical Courtyard</h4>
+                <p>Decor • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEacK7_qgtAKaMJV7__GVP_0CKO-RfG2UquA&s"
+                alt="South Indian Meals" class="side-image" />
+              <div class="side-content">
+                <h4>Perfect Spots for Sunset Dinners</h4>
+                <p>Experience • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBIoymqw1lO_eAAgikhma1qo9yI3MnXxqjOw&s"
+                alt="Shahi Paneer" class="side-image" />
+              <div class="side-content">
+                <h4>Green Corners That Refresh</h4>
+                <p>Ambience • 3 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 5: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1KsxYYS_4csKzxR_CdK1CFaW2wiaaGuLMCmH7mCOmLAaJNxGJcNXpcdmJhXrg2lktXEI&usqp=CAU"
+              alt="Samosas" class="featured-image" />
+            <span class="tag">Lighting</span>
+            <h3>Ceiling Dreams: Light Fixtures That Dazzle</h3>
+            <p>Our signature lighting — including statement chandeliers and soft Edison bulbs — adds a warm glow to
+              every dish and every mood.</p>
+            <p class="meta">Jul 16, 2025 • 3 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdo306IzMQpa4NkrraOJ8pPJ6ObUngJvhDYQ&s"
+                alt="Aloo Tikki" class="side-image" />
+              <div class="side-content">
+                <h4>From Above: Lights That Complete the Look</h4>
+                <p>Design • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbAtGTXK2AgB5HzAixZBNaa7j1ugCbnUNFzQ&s"
+                alt="Vada Pav" class="side-image" />
+              <div class="side-content">
+                <h4>Why Lighting Shapes the Vibe</h4>
+                <p>Atmosphere • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_BCC6X_1faxSNXpbiEKyH_lYn4gty0FEPHg&s"
+                alt="Chole Bhature" class="side-image" />
+              <div class="side-content">
+                <h4>Spotlight on the Chandeliers</h4>
+                <p>Style • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+  <section id="food" class="menu-section">
+    <h2 class="section-title"><span> Food</span></h2>
+
+    <div class="gallery-section">
+      <!-- Card 1: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNhpBgwlTVmSZyERpk5J3bFf1X2ILfUk4rgQ&s"
+              alt="Delicious gourmet dish" class="featured-image" />
+            <span class="tag">Food</span>
+            <h3>Flavors of Bungalow: A Culinary Experience</h3>
+            <p>Explore a menu that celebrates bold flavors and creative plating. From sizzling starters to decadent
+              desserts, every bite is crafted with love and flair.</p>
+            <p class="meta">Jul 22, 2025 • 3 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://stupiddope.com/wp-content/uploads/2025/05/DiGiorno_FamilyLifestyle2.jpg"
+                alt="Signature pizza" class="side-image" />
+              <div class="side-content">
+                <h4>Top Picks: Our Signature Wood-Fired Pizza</h4>
+                <p>Chef's Choice • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/hgzrmbfukohyhkaqpnig"
+                alt="Biryani platter" class="side-image" />
+              <div class="side-content">
+                <h4>Royal Biryani: The King of Flavors</h4>
+                <p>Indian Cuisine • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://i.pinimg.com/736x/ef/9f/2d/ef9f2dbf0e5a5ae2c98272bd37347db5.jpg"
+                alt="Spaghetti and meatballs" class="side-image" />
+              <div class="side-content">
+                <h4>Pasta Diaries: Italian on Your Plate</h4>
+                <p>World Flavors • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Right -->
+      <div class="gallery-card right-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://b.zmtcdn.com/data/pictures/1/6508401/63210ebc0fbd488dbecce8755ec5f77a_featured_v2.jpg"
+              alt="Chicken Tikka Masala" class="featured-image" />
+            <span class="tag">Food</span>
+            <h3>Spice Route: Chicken Tikka Masala</h3>
+            <p>Bold spices and creamy textures collide in this North Indian favorite. A must-try for curry lovers!</p>
+            <p class="meta">Jul 22, 2025 • 2 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXoTAYCEJDDgmeaGi3es7xTscdGJmG0gFlbw&s"
+                alt="Paneer Tikka" class="side-image" />
+              <div class="side-content">
+                <h4>Veg Delight: Tandoori Paneer Tikka</h4>
+                <p>Grill Magic • 1 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://www.vegrecipesofindia.com/wp-content/uploads/2012/08/bhel-puri-recipe-1.jpg"
+                alt="Bhel Puri" class="side-image" />
+              <div class="side-content">
+                <h4>Street Eats: Crunchy Bhel Puri</h4>
+                <p>Indian Snacks • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgazNtoI8feqpbbR6xy3ZNO7ENEWK4DVhxvw&s"
+                alt="Butter Chicken" class="side-image" />
+              <div class="side-content">
+                <h4>Classic Comfort: Creamy Butter Chicken</h4>
+                <p>North Indian • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvj80Qr9aMSHMIuOY-OTYrKdxEHHNL1bPBgQ&s"
+              alt="Veg Fried Rice" class="featured-image" />
+            <span class="tag">Food</span>
+            <h3>Fusion Flavors: Indo-Chinese Fried Rice</h3>
+            <p>A quick stir-fry of veggies, rice and magic sauces – your go-to comfort bowl!</p>
+            <p class="meta">Jul 22, 2025 • 2 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqh519lQfJGut48hnN4O8I0tFmKkbMNXsRAw&s"
+                alt="Veg Manchurian" class="side-image" />
+              <div class="side-content">
+                <h4>Saucy Cravings: Veg Manchurian</h4>
+                <p>Asian Fusion • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4k_-gv8DocJmotpyP-rKgGHbl5Nr7C-XNHg&s"
+                alt="Hakka Noodles" class="side-image" />
+              <div class="side-content">
+                <h4>Noodle Nights: Hakka Style</h4>
+                <p>Spicy Stir-Fry • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgnjy3wsmwkrf6bObeOBRkoZ3EQkJ7QQ3B5A&s"
+                alt="Gobi Manchurian" class="side-image" />
+              <div class="side-content">
+                <h4>Gobi Manchurian: Crispy & Saucy</h4>
+                <p>Fusion Street • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Right -->
+      <div class="gallery-card right-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img
+              src="https://rajwadigauravrestaurant.com/wp-content/uploads/2024/12/WhatsApp-Image-2024-12-18-at-11.43.46-AM.jpeg"
+              alt="Veg Thali" class="featured-image" />
+            <span class="tag">Food</span>
+            <h3>Traditional Thali: A Royal Feast</h3>
+            <p>An assortment of Indian classics served in one plate. Balanced, colorful and satisfying.</p>
+            <p class="meta">Jul 22, 2025 • 4 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://www.cookwithmanali.com/wp-content/uploads/2021/07/Tandoori-Roti-676x1024.jpg"
+                alt="Chapati and Curry" class="side-image" />
+              <div class="side-content">
+                <h4>Daily Comfort: Chapati & Subzi</h4>
+                <p>Home Food • 1 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://images.jdmagicbox.com/justdial/icons/website/dishes/sambar_rice.jpg"
+                alt="South Indian Meals" class="side-image" />
+              <div class="side-content">
+                <h4>Southern Love: Sambar & Rice</h4>
+                <p>South Flavors • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmB6XAaBZAQi0yT_3R9nQ6utedu0YlQ9iyng&s"
+                alt="Shahi Paneer" class="side-image" />
+              <div class="side-content">
+                <h4>Regal Taste: Shahi Paneer</h4>
+                <p>Royal Feast • 2 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 5: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIFhzzNXOom9sggW6rRkefwmaDil6zhaZtQA&s"
+              alt="Samosas" class="featured-image" />
+            <span class="tag">Food</span>
+            <h3>Snack O'Clock: Hot & Crispy Samosas</h3>
+            <p>Golden, crispy triangles filled with spicy potatoes – your perfect tea-time partner!</p>
+            <p class="meta">Jul 22, 2025 • 1 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://maharajaroyaldining.com/wp-content/uploads/2024/03/Aloo-Tikki-1.webp" alt="Aloo Tikki"
+                class="side-image" />
+              <div class="side-content">
+                <h4>Chaat Cravings: Aloo Tikki Magic</h4>
+                <p>Street Style • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://5.imimg.com/data5/SELLER/Default/2021/6/JV/GK/LI/106073308/vada-pav-500x500.jpg"
+                alt="Vada Pav" class="side-image" />
+              <div class="side-content">
+                <h4>Mumbai’s Vibe: Spicy Vada Pav</h4>
+                <p>Bombay Special • 1 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRVRIt8ub4FwvT8W39JNSQYFwlNYKIaHRGeg&s"
+                alt="Chole Bhature" class="side-image" />
+              <div class="side-content">
+                <h4>Punjabi Love: Chole Bhature</h4>
+                <p>Rich & Flavorful • 3 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Repeat more cards as needed -->
+    </div>
+  </section>
+
+
+
+
+
+
+  <section id="staff" class="menu-section">
+    <h2 class="section-title"><span>🧑 Staff</span></h2>
+
+    <div class="gallery-section">
+      <!-- Card 1: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNhpBgwlTVmSZyERpk5J3bFf1X2ILfUk4rgQ&s"
+              alt="Delicious gourmet dish" class="featured-image" />
+            <span class="tag">Executive Chef</span>
+            <h3>Chef Arya – The Flame Whisperer</h3>
+            <p>With over 15 years of experience, Chef Arya infuses tradition with innovation to create seafood
+              sensations.</p>
+            <p class="meta">Jul 22, 2025 • 2 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://stupiddope.com/wp-content/uploads/2025/05/DiGiorno_FamilyLifestyle2.jpg"
+                alt="Signature pizza" class="side-image" />
+              <div class="side-content">
+                <h4>Signature Grilled Salmon</h4>
+                <p>Seafood Perfection • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/hgzrmbfukohyhkaqpnig"
+                alt="Biryani platter" class="side-image" />
+              <div class="side-content">
+                <h4>Spiced Seared Tuna Delight</h4>
+                <p>Ocean Flavors • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://i.pinimg.com/736x/ef/9f/2d/ef9f2dbf0e5a5ae2c98272bd37347db5.jpg"
+                alt="Spaghetti and meatballs" class="side-image" />
+              <div class="side-content">
+                <h4>Mixed Seafood Platter</h4>
+                <p>Chef’s Selection • 3 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Right -->
+      <div class="gallery-card right-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://b.zmtcdn.com/data/pictures/1/6508401/63210ebc0fbd488dbecce8755ec5f77a_featured_v2.jpg"
+              alt="Chicken Tikka Masala" class="featured-image" />
+            <span class="tag">Head Indian Chef</span>
+            <h3>Chef Rohan – Master of Masalas</h3>
+            <p>Rohan’s legacy lies in his ability to bring authentic Indian spices to life in every bite.</p>
+            <p class="meta">Jul 22, 2025 • 3 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXoTAYCEJDDgmeaGi3es7xTscdGJmG0gFlbw&s"
+                alt="Paneer Tikka" class="side-image" />
+              <div class="side-content">
+                <h4>Classic Butter Chicken</h4>
+                <p>Indian Soul • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://www.vegrecipesofindia.com/wp-content/uploads/2012/08/bhel-puri-recipe-1.jpg"
+                alt="Bhel Puri" class="side-image" />
+              <div class="side-content">
+                <h4>Spicy Tandoori Chicken</h4>
+                <p>Clay Oven Charm • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgazNtoI8feqpbbR6xy3ZNO7ENEWK4DVhxvw&s"
+                alt="Butter Chicken" class="side-image" />
+              <div class="side-content">
+                <h4>Royal Saffron Biryani</h4>
+                <p>Layered Flavors • 3 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvj80Qr9aMSHMIuOY-OTYrKdxEHHNL1bPBgQ&s"
+              alt="Veg Fried Rice" class="featured-image" />
+            <span class="tag">Pastry Chef</span>
+            <h3>Chef Elina – Queen of Sweets</h3>
+            <p>Elina believes every dessert should be an experience — rich, romantic, and unforgettable.</p>
+            <p class="meta">Jul 22, 2025 • 2 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqh519lQfJGut48hnN4O8I0tFmKkbMNXsRAw&s"
+                alt="Veg Manchurian" class="side-image" />
+              <div class="side-content">
+                <h4>Chocolate Lava Cake</h4>
+                <p>Dessert Dreams • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4k_-gv8DocJmotpyP-rKgGHbl5Nr7C-XNHg&s"
+                alt="Hakka Noodles" class="side-image" />
+              <div class="side-content">
+                <h4>Parisian Macaron Medley</h4>
+                <p>Sweet Elegance • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgnjy3wsmwkrf6bObeOBRkoZ3EQkJ7QQ3B5A&s"
+                alt="Gobi Manchurian" class="side-image" />
+              <div class="side-content">
+                <h4>Fresh Berry Tart</h4>
+                <p>Summer Bites • 1 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Right -->
+      <div class="gallery-card right-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img
+              src="https://rajwadigauravrestaurant.com/wp-content/uploads/2024/12/WhatsApp-Image-2024-12-18-at-11.43.46-AM.jpeg"
+              alt="Veg Thali" class="featured-image" />
+            <span class="tag">Savory Chef</span>
+            <h3>Chef Matteo – King of Umami</h3>
+            <p>Matteo brings the countryside of Tuscany to every plate — bold, soulful, and seasoned with love.</p>
+            <p class="meta">Jul 22, 2025 • 3 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://www.cookwithmanali.com/wp-content/uploads/2021/07/Tandoori-Roti-676x1024.jpg"
+                alt="Chapati and Curry" class="side-image" />
+              <div class="side-content">
+                <h4>Truffle Tagliatelle</h4>
+                <p>Earthy Cravings • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://images.jdmagicbox.com/justdial/icons/website/dishes/sambar_rice.jpg"
+                alt="South Indian Meals" class="side-image" />
+              <div class="side-content">
+                <h4>Classic Lasagna Layers</h4>
+                <p>Comfort Food • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmB6XAaBZAQi0yT_3R9nQ6utedu0YlQ9iyng&s"
+                alt="Shahi Paneer" class="side-image" />
+              <div class="side-content">
+                <h4>Charred Garlic Bread</h4>
+                <p>Woodfire Goodness • 1 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 5: Left -->
+      <div class="gallery-card left-card">
+        <div class="latest-stories">
+          <div class="featured-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIFhzzNXOom9sggW6rRkefwmaDil6zhaZtQA&s"
+              alt="Samosas" class="featured-image" />
+            <span class="tag">Fusion Chef</span>
+            <h3>Chef Aanya – Fire & Flavors</h3>
+            <p>Aanya fuses Indian spices with modern plating — a dance of heat, color, and drama on every dish.</p>
+            <p class="meta">Jul 22, 2025 • 2 min read</p>
+          </div>
+
+          <div class="side-stories">
+            <div class="side-story">
+              <img src="https://maharajaroyaldining.com/wp-content/uploads/2024/03/Aloo-Tikki-1.webp" alt="Aloo Tikki"
+                class="side-image" />
+              <div class="side-content">
+                <h4>Paneer Masala Bao</h4>
+                <p>Street Fusion • 2 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://5.imimg.com/data5/SELLER/Default/2021/6/JV/GK/LI/106073308/vada-pav-500x500.jpg"
+                alt="Vada Pav" class="side-image" />
+              <div class="side-content">
+                <h4>Tandoori Tacos</h4>
+                <p>Global Flare • 3 min read</p>
+              </div>
+            </div>
+
+            <div class="side-story">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRVRIt8ub4FwvT8W39JNSQYFwlNYKIaHRGeg&s"
+                alt="Chole Bhature" class="side-image" />
+              <div class="side-content">
+                <h4>Samosa Pockets</h4>
+                <p>Snack Reimagined • 1 min read</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+  <section id="events" class="menu-section">
+  <h2 class="section-title"><span> Events</span></h2>
+
+  <div class="gallery-section">
+    <!-- Card 1: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuboU8EThTKdwcd0abkj9OdeOSpdybqGbinmcBdDooR0F0tXBZ4K6FbVC9JUesaN7PFC0&usqp=CAU" alt="Delicious gourmet dish" class="featured-image" />
+          <span class="tag">Festive Feasts</span>
+          <h3>Celebrations with Flavor: Holi Bash Highlights</h3>
+          <p>Color, culture, and cuisine — our Holi celebrations are a burst of joy and spice. Relive the vibrant moments through our festive spread and live performances.</p>
+          <p class="meta">Jul 22, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL9qD0rcV2DAM1D6KEQev8UJY6dLVXgt4g6w&s" alt="Signature pizza" class="side-image" />
+            <div class="side-content">
+              <h4>Color Pop Corners from the Holi Festival</h4>
+              <p>Culture • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://media.istockphoto.com/id/1211862840/photo/holika-dahan.jpg?s=612x612&w=0&k=20&c=EBccZ21Du-IR4YjddELMYQNNZQzoWAjnfcQ-k_sKCvA=" alt="Biryani platter" class="side-image" />
+            <div class="side-content">
+              <h4>Traditional Treats that Stole the Show</h4>
+              <p>Food • 3 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://previews.123rf.com/images/kusmadeomkargmailcom/kusmadeomkargmailcom2009/kusmadeomkargmailcom200900068/154806126-pune-india-september-4-2017-ramanbaug-dhol-tasha-pathak-in-procession-played-dhol-on-the.jpg" alt="Spaghetti and meatballs" class="side-image" />
+            <div class="side-content">
+              <h4>Live Dhol Nights: Beats & Bites</h4>
+              <p>Entertainment • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://eventsmanagementkerala.com/wp-content/uploads/elementor/thumbs/staydium76-2-r60xt7vdfuscegmaibpy1ianaumlkzwd6oll4pb9to.webp" alt="Chicken Tikka Masala" class="featured-image" />
+          <span class="tag">Weddings</span>
+          <h3>Dream Weddings at Bungalow</h3>
+          <p>From floral setups to curated menus by Vikas Khanna, our wedding experiences are all about elegance, flavor, and unforgettable memories.</p>
+          <p class="meta">Jul 20, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://silkenweddings.com/assets/images/about/about.jpg" alt="Paneer Tikka" class="side-image" />
+            <div class="side-content">
+              <h4>Behind the Scenes: Curating Fairytale Moments</h4>
+              <p>Decor • 3 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe_UeNRs55NfPUUyVFLG7znj8bA2uBGJEh2E3LF1o8DkU2wNpch20xc3J8XgQ_A4NPRoc&usqp=CAU" alt="Bhel Puri" class="side-image" />
+            <div class="side-content">
+              <h4>Lighting Up Love: Wedding Decor Ideas</h4>
+              <p>Inspiration • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHhfXTTBZL40MslvCh3WrdPTbN1WfBkm4eZxW8Fvg4T_osg_5otiRc0fmP5I4Ugr9q8RA&usqp=CAU" alt="Butter Chicken" class="side-image" />
+            <div class="side-content">
+              <h4>Table Settings to Remember</h4>
+              <p>Experience • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://images.timesnownews.com/thumb/msid-113587455,thumbsize-92354,width-1280,height-720,resizemode-75/113587455.jpg" alt="Veg Fried Rice" class="featured-image" />
+          <span class="tag">Private Events</span>
+          <h3>Chef’s Table Evenings with Vikas Khanna</h3>
+          <p>An intimate affair where guests savor a specially curated tasting menu, paired with stories from the master chef himself.</p>
+          <p class="meta">Jul 18, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2cn_fRzolnv5C939hnSXt21YPWgo0ErGW_w&s" alt="Veg Manchurian" class="side-image" />
+            <div class="side-content">
+              <h4>Art Meets Cuisine: A Dining Experience</h4>
+              <p>Design • 3 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9a-tGYDCmIb9N6_-p_fkspd5ZgCH5NeMzDg&s" alt="Hakka Noodles" class="side-image" />
+            <div class="side-content">
+              <h4>Golden Hour Dinners: Soft Lights & Sips</h4>
+              <p>Ambience • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ12qR_7NqXpcLpSWPAUizalX8xtHc6d6cL2g&s" alt="Gobi Manchurian" class="side-image" />
+            <div class="side-content">
+              <h4> Menus for Every Guest</h4>
+              <p>Luxury • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://res.cloudinary.com/https-highape-com/image/upload/q_auto:eco,f_auto,h_380/v1715851370/wegld8eytpzbtrqjussb.jpg" alt="Veg Thali" class="featured-image" />
+          <span class="tag">Open-Air Events</span>
+          <h3>Jazz Nights & Cocktail Soirées</h3>
+          <p>Live music under twinkling lights, paired with handcrafted cocktails — our courtyard evenings are a treat for all senses.</p>
+          <p class="meta">Jul 17, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7DlmF9v971dJYmrxyqBAVVnIkpfOmU3R7jQ&s" alt="Chapati and Curry" class="side-image" />
+            <div class="side-content">
+              <h4>Setting the Scene for Serenity</h4>
+              <p>Decor • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkuJddD6ffaWGEqDKYK55W2wQ_a-BfG6ApEg&s" alt="South Indian Meals" class="side-image" />
+            <div class="side-content">
+              <h4>Where Music Meets the Moonlight</h4>
+              <p>Experience • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRamjbt-A_vQ9hqd4tT1ZmZHzqfAlSHfWDFBw&s" alt="Shahi Paneer" class="side-image" />
+            <div class="side-content">
+              <h4>Botanical Backdrops & Breezy Nights</h4>
+              <p>Ambience • 3 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJl_ZfWgePfcos0JclU84oebNdxJ_is2Oxkw&s" alt="Samosas" class="featured-image" />
+          <span class="tag">Decor</span>
+          <h3>Event Styling: The Magic of Mood Lighting</h3>
+          <p>Fairy lights, lanterns, and floral decor — every event is carefully curated to create a memory, not just a moment.</p>
+          <p class="meta">Jul 16, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgdYI8RQ19ciVl1tVd1GJLSdmbrlbjQ8IX3g&s" alt="Aloo Tikki" class="side-image" />
+            <div class="side-content">
+              <h4>Floral Arches & Photo Ops</h4>
+              <p>Decor • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmVB0wqeBjUj3YB59xL7vG1MuMPt0NzTRhgw&s" alt="Vada Pav" class="side-image" />
+            <div class="side-content">
+              <h4>Ambient Details That Guests Love</h4>
+              <p>Atmosphere • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmQmbEU0Qgsr8jRzfpSehHBBg6ay7hpIo7Cg&s" alt="Chole Bhature" class="side-image" />
+            <div class="side-content">
+              <h4>Chandeliers for Every Celebration</h4>
+              <p>Style • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guests" class="menu-section"> 
+  <h2 class="section-title"><span> Guest </span></h2>
+
+  <div class="gallery-section">
+    <!-- Card 1: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/14/9e/0d/59/variety.jpg?w=600&h=-1&s=1" alt="Guest enjoying meal" class="featured-image" />
+          <span class="tag">Guest Experience</span>
+          <h3>Rhea Kapoor: “A soulful Sunday brunch I’ll never forget”</h3>
+          <p>“The warm hospitality, beautiful ambience, and that unforgettable truffle khichdi — The Bungalow truly knows how to create magic on a plate.”</p>
+          <p class="meta">Jul 21, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpaJRvakwCtczHQ380JR4b7OPFvg-ZzRmE_g&s" alt="Truffle Khichdi" class="side-image" />
+            <div class="side-content">
+              <h4>Rhea’s Favorite: Truffle Khichdi</h4>
+              <p>Rice • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYLOlO_H5WMWU74fCxFfZANorjo3OzFyDNig&s" alt="Masala Chaas" class="side-image" />
+            <div class="side-content">
+              <h4>Cooling Off: Signature Masala Chaas</h4>
+              <p>Beverage • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKhfAtgOX6uctF4Ru3FBdEXfZeWytSVep2Mw&s" alt="Nolen Gur Ice Cream" class="side-image" />
+            <div class="side-content">
+              <h4>Dessert Pick: Nolen Gur Ice Cream</h4>
+              <p>Dessert • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNhpBgwlTVmSZyERpk5J3bFf1X2ILfUk4rgQ&s" alt="Guest testimonial" class="featured-image" />
+          <span class="tag">Guest Experience</span>
+          <h3>Chef Maria Singh: “Every dish took me home”</h3>
+          <p>“As a chef myself, I was moved by the attention to detail in every bite. Vikas Khanna’s Bungalow is a celebration of Indian roots.”</p>
+          <p class="meta">Jul 20, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://www.ohmyveg.co.uk/wp-content/uploads/2024/11/Dal-Bukhara-500x500.jpg" alt="Dal Bhukara" class="side-image" />
+            <div class="side-content">
+              <h4>Maria’s Pick: Dal Bhukara</h4>
+              <p>Classic • 3 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://img.etimg.com/thumb/msid-122559512,width-480,height-360,imgsize-2164574,resizemode-75/tandoori-roti-the-rustic-warrior-of-indian-bread.jpg" alt="Tandoori Roti" class="side-image" />
+            <div class="side-content">
+              <h4>Pairing Favorite: Tandoori Roti</h4>
+              <p>Breads • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOCoR9GrxJzuGLpSvXRjx43Xb8Qxi1hRG40g&s" alt="Aam Panna Mocktail" class="side-image" />
+            <div class="side-content">
+              <h4>Refreshing Touch: Aam Panna Mocktail</h4>
+              <p>Mocktail • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPk_BTw8V1sl3BYt73Is0Y36oS3F0cj8V25A&s" alt="Couple dining" class="featured-image" />
+          <span class="tag">Guest Experience</span>
+          <h3>Ananya & Kabir: “Our anniversary dinner was unforgettable”</h3>
+          <p>“From the candle-lit courtyard to the saffron paneer — every detail felt curated just for us. Thank you, Team Bungalow!”</p>
+          <p class="meta">Jul 18, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGXEyJuB0bjfp7p5gMGHZVbRT8IJuTVpSs3Q&s" alt="Saffron Paneer" class="side-image" />
+            <div class="side-content">
+              <h4>Ananya’s Favorite: Saffron Paneer Tikka</h4>
+              <p>Grill • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3btVIIi4AM8exJxm9G_FBpdyy8nZOJEkKpA&s" alt="Kesar Phirni" class="side-image" />
+            <div class="side-content">
+              <h4>Sweet Ending: Kesar Phirni</h4>
+              <p>Dessert • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://images.lifestyleasia.com/wp-content/uploads/sites/7/2022/03/02124056/St-Regis-Featured.jpg?tr=w-1200,h-900" alt="Tandoori Broccoli" class="side-image" />
+            <div class="side-content">
+              <h4>Kabir’s Pick: Tandoori Broccoli</h4>
+              <p>Veg Grill • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://content.api.news/v3/images/bin/b836cdc9c29282863a1b0853ef26b4ea" alt="Solo diner" class="featured-image" />
+          <span class="tag">Guest Experience</span>
+          <h3>Sahil Mehta: “Solo dining, soul-filling food”</h3>
+          <p>“As someone who loves quiet meals and big flavors, The Bungalow gave me the perfect solo evening — no rush, just love in every bite.”</p>
+          <p class="meta">Jul 17, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://thewoksoflife.com/wp-content/uploads/2022/01/chili-garlic-shrimp-17.jpg" alt="Chili Garlic Prawns" class="side-image" />
+            <div class="side-content">
+              <h4>Sahil’s Choice: Chili Garlic Prawns</h4>
+              <p>Seafood • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX0ehzm4y-pahztPOVgqUxIXJMoXe6ertRCA&s" alt="Smoked Baingan Bharta" class="side-image" />
+            <div class="side-content">
+              <h4>Comfort Pick: Smoked Baingan Bharta</h4>
+              <p>Veg • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbhGdHwPGbNDzH3Dlom_Ct__pd-Buv1MzrcQ&s" alt="Rose Lemonade" class="side-image" />
+            <div class="side-content">
+              <h4>Drink Favorite: Rose Lemonade</h4>
+              <p>Mocktail • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Card 5: Left -->
+<div class="gallery-card left-card">
+  <div class="latest-stories">
+    <div class="featured-story">
+      <img src="https://www.gokite.travel/wp-content/uploads/2025/07/7.-Brunch-Cake-%E2%80%93-Aesthetic-and-Family-Friendly.webp" alt="Travel blogger dining" class="featured-image" />
+      <span class="tag">Guest Experience</span>
+      <h3>Ayesha Banerjee: “A culinary stop that became the highlight of my trip”</h3>
+      <p>“From Kolkata to Kochi, I’ve tasted it all — but The Bungalow’s ghee roast crab and tamarind cocktail swept me off my feet. It’s a love letter to Indian flavors.”</p>
+      <p class="meta">Jul 15, 2025 • 3 min read</p>
+    </div>
+
+    <div class="side-stories">
+      <div class="side-story">
+        <img src="https://bonmasala.com/wp-content/uploads/2023/01/crab-transformed.jpeg" alt="Ghee Roast Crab" class="side-image" />
+        <div class="side-content">
+          <h4>Ayesha’s Craving: Ghee Roast Crab</h4>
+          <p>Seafood • 3 min read</p>
+        </div>
+      </div>
+
+      <div class="side-story">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVxBk3e0yDG1ONCYZY0q6Y8J4JtRr2LoL8rQ&s" alt="Tamarind Cocktail" class="side-image" />
+        <div class="side-content">
+          <h4>Unique Sip: Tamarind Whiskey Cocktail</h4>
+          <p>Drinks • 2 min read</p>
+        </div>
+      </div>
+
+      <div class="side-story">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNqv8qSYdbiT5_GUA5rc1FJA_Ntn64tvdbVw&s" alt="Mango Kulfi" class="side-image" />
+        <div class="side-content">
+          <h4>Sweet Memory: Mango Kulfi on Stick</h4>
+          <p>Dessert • 2 min read</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Card 6: Right -->
+<div class="gallery-card right-card">
+  <div class="latest-stories">
+    <div class="featured-story">
+      <img src="https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/2025-06/Fine%20Dining%20Plating%2012%20Essentials%20That%20Elevate%20Every%20Dish.jpg" alt="Business guest" class="featured-image" />
+      <span class="tag">Guest Experience</span>
+      <h3>Rahul Dev: “Our leadership dinner felt like a Michelin experience”</h3>
+      <p>“Hosting our team at The Bungalow was a decision I’ll never regret. The chef’s tasting menu, attentive service, and quiet elegance created real connection.”</p>
+      <p class="meta">Jul 13, 2025 • 4 min read</p>
+    </div>
+
+    <div class="side-stories">
+      <div class="side-story">
+        <img src="https://platform.miami.eater.com/wp-content/uploads/sites/12/chorus/uploads/chorus_asset/file/25412119/Screen_Shot_2024_04_22_at_10.08.52_AM.png?quality=90&strip=all&crop=0.066401062417%2C0%2C99.867197875166%2C100&w=2400" alt="Chef's tasting menu" class="side-image" />
+        <div class="side-content">
+          <h4>Group Favorite: Chef’s Tasting Menu</h4>
+          <p>Multi-course • 4 min read</p>
+        </div>
+      </div>
+
+      <div class="side-story">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-eqwXbMeORkLQrO3V9SDpxd81VLm_i3xfBGKjf4CJZnh0uakUj6sf8bknHiSDY_amplc&usqp=CAU" alt="Jeera Rice & Gravy" class="side-image" />
+        <div class="side-content">
+          <h4>Comfort Touch: Jeera Rice & Smoked Gravy</h4>
+          <p>Main • 2 min read</p>
+        </div>
+      </div>
+
+      <div class="side-story">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDakVvPMqjbyBF9naxpr1xQSz_kPoKv3iUIQ&s" alt="Filter Coffee" class="side-image" />
+        <div class="side-content">
+          <h4>Final Note: South Indian Filter Coffee</h4>
+          <p>Hot Beverage • 2 min read</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+
+
+  <section id="branding" class="menu-section"> 
+  <h2 class="section-title"><span> Branding</span></h2>
+
+  <div class="gallery-section">
+    <!-- Card 1: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://www.lakdi.com/cdn/shop/articles/Celebrating_Indian_Heritage_Traditional_Wooden_Furniture.webp?v=1737179806" alt="Warm wood interiors" class="featured-image" />
+          <span class="tag">Heritage Craft</span>
+          <h3>Handcrafted Woodwork: Celebrating Indian Artistry</h3>
+          <p>Our furniture features hand-carved wood with traditional motifs—a nod to India's rich woodworking legacy.</p>
+          <p class="meta">Jul 22, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://5.imimg.com/data5/WC/SO/QN/SELLER-93142239/carving-chair-500x500.jpg" alt="Carved chair detail" class="side-image" />
+            <div class="side-content">
+              <h4>Signature Carved Chairs</h4>
+              <p>Craft • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://static.wixstatic.com/media/648254_a1e48e65f0df4aec8cd4aece63de9bca~mv2.jpg/v1/fill/w_532,h_662,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/648254_a1e48e65f0df4aec8cd4aece63de9bca~mv2.jpg" alt="Table edge carving" class="side-image" />
+            <div class="side-content">
+              <h4>Intricate Table Edges</h4>
+              <p>Design • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://thumbs.dreamstime.com/b/image-wooden-table-front-abstract-blurred-restaurant-lights-background-product-display-presentation-97937950.jpg" alt="Wood grain textures" class="side-image" />
+            <div class="side-content">
+              <h4>Natural Wood Grain Finishes</h4>
+              <p>Ambience • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://images.stockcake.com/public/7/3/a/73ae4643-6624-4474-93c8-0bf43a639b29_large/vintage-cafe-interior-stockcake.jpg" alt="Antique decor accents" class="featured-image" />
+          <span class="tag">Authentic Accents</span>
+          <h3>Vintage Accents & Antique Decor</h3>
+          <p>We source antiques from across India—brass lanterns, old Bengali doors, and vintage mirrors—to imbue history into our space.</p>
+          <p class="meta">Jul 20, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXf_FMgIXDUYmkEVKpNpfRUVNbCpZLFXFjsw&s" alt="Brass lantern" class="side-image" />
+            <div class="side-content">
+              <h4>Brass Lantern Highlights</h4>
+              <p>Décor • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6JX9qnFF7FSc69jTtOZrBea_StiDCaZhvkg&s" alt="Vintage mirror" class="side-image" />
+            <div class="side-content">
+              <h4>Ornate Vintage Mirrors</h4>
+              <p>Style • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjBNZP60JYfBVdQf7eJvcnq5NScWSlJ6mmcQ&s" alt="Carved door" class="side-image" />
+            <div class="side-content">
+              <h4>Hand‑painted Carved Doors</h4>
+              <p>Character • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://thumbs.dreamstime.com/b/modern-restaurant-interior-stunning-floral-mural-as-focal-point-room-filled-wooden-tables-chairs-326189229.jpg" alt="Statement art wall" class="featured-image" />
+          <span class="tag">Wall Art</span>
+          <h3>Curated Mural & Wall Art</h3>
+          <p>Each wall features custom murals inspired by Indian landscapes and folklore—painted by local artists.</p>
+          <p class="meta">Jul 18, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq2PR-1wkKZrQpxt_Jcw-u4w0ViMYWFshpw4-Mrm-jPeIN8S93gAKGSgdPb6Yd3WTNvME&usqp=CAU" alt="Folk mural detail" class="side-image" />
+            <div class="side-content">
+              <h4>Folk Tale Mural Panels</h4>
+              <p>Culture • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://www.royaldesignstudio.com/cdn/shop/articles/Mali_Mudcloth_-_jesshartdesigns_3.jpg?v=1655320572&width=4777" alt="Tribal stencil art" class="side-image" />
+            <div class="side-content">
+              <h4>Tribal Texture Stencils</h4>
+              <p>Design • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBp5h-5MZaQe_xsPJHf4_z-E_Xn0ovBP1FCA&s" alt="Bold color accents" class="side-image" />
+            <div class="side-content">
+              <h4>Vibrant Color Accents</h4>
+              <p>Palette • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://www.royalcaribbeanincentives.com/content/uploads/RCI_QN-ChefsTableF-1-720x432.jpg" alt="Chef’s table area" class="featured-image" />
+          <span class="tag">Chef’s Table</span>
+          <h3>Chef’s Table Brilliance</h3>
+          <p>Experience chef‑crafted cuisine firsthand—intimate seating, live cooking, and personal storytelling by Chef Vikas Khanna.</p>
+          <p class="meta">Jul 16, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAyQlSkCApu5v7rsaGr4aGuojCruSXlCEQAg&s" alt="Chef plating dish" class="side-image" />
+            <div class="side-content">
+              <h4>Live Plating Moments</h4>
+              <p>Experience • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQodJvDPh0WjcILJ9JfFYvo0SSI15OGqT3RiA&s" alt="Tasting menu" class="side-image" />
+            <div class="side-content">
+              <h4>Seasonal Tasting Menu</h4>
+              <p>Flavour • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/inline-images/Pistachio%20Rose%20Baklava%20Tart.jpg" alt="Signature dessert" class="side-image" />
+            <div class="side-content">
+              <h4>Exclusive Dessert Reveal</h4>
+              <p>Indulgence • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://www.milluminodiverso.it/wp-content/uploads/2024/08/illuminazione-ristoranti-5-scaled.jpg" alt="Ambient lighting" class="featured-image" />
+          <span class="tag">Mood Lighting</span>
+          <h3>Ambience Through Light</h3>
+          <p>Our warm Edison bulbs and lanterns create cozy pockets of light—highlighting textures, dishes, and conversations.</p>
+          <p class="meta">Jul 14, 2025 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMFIqm-v9UtnUnOrPFFEc2Z7izl1OtdP-mvg&s" alt="Lantern lights" class="side-image" />
+            <div class="side-content">
+              <h4>Hanging Lanterns Gallery</h4>
+              <p>Lighting • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKIeVc5TG6ayDIfP4d2zYhjcYV1pHUP_tbqg&s" alt="Edison bulb cluster" class="side-image" />
+            <div class="side-content">
+              <h4>Clusters of Edison Bulbs</h4>
+              <p>Style • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://images.stockcake.com/public/3/8/a/38ac9eec-94ec-4451-9eae-c9a55380aea1_large/romantic-dinner-setup-stockcake.jpg" alt="Candlelight table" class="side-image" />
+            <div class="side-content">
+              <h4>Soft Candlelit Tables</h4>
+              <p>Ambience • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/2f/0f/20/mandarin-garden-courtyard.jpg?w=900&h=500&s=1" alt="Courtyard greenery" class="featured-image" />
+          <span class="tag">Garden Courtyard</span>
+          <h3>Green Oasis: The Garden Courtyard</h3>
+          <p>A lush courtyard with potted greens, fairy lights, and al fresco vibes—perfect for evening gatherings and brunch.</p>
+          <p class="meta">Jul 12, 2025 • 4 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSHJs7jH0-KChfBrLJh8aZkaK5okzrkqq3Jg&s" alt="Potted plants" class="side-image" />
+            <div class="side-content">
+              <h4>Hand-Placed Greenery</h4>
+              <p>Nature • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://images.stockcake.com/public/0/2/a/02a62663-0096-48c2-a230-8f0df79ba23c_medium/enchanting-cafe-ambiance-stockcake.jpg" alt="Fairy light setup" class="side-image" />
+            <div class="side-content">
+              <h4>Twinkling Fairy Lights</h4>
+              <p>Decor • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTChHhNJMHNYgDHvW5u6WMhzC_ukTztUJNdjA&s" alt="Outdoor seating" class="side-image" />
+            <div class="side-content">
+              <h4>Al Fresco Seating Comforts</h4>
+              <p>Experience • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+  <section id="awards" class="menu-section"> 
+  <h2 class="section-title"><span> Awards</span></h2>
+
+  <div class="gallery-section">
+    <!-- Card 1: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://static.toiimg.com/thumb/msid-116172650,width-400,resizemode-4/116172650.jpg" alt="Golden Chef Hat Award" class="featured-image" />
+          <span class="tag">Culinary Excellence</span>
+          <h3>Chef Vikas Khanna Wins Golden Chef Hat 2025</h3>
+          <p>Honored for his innovative menu at Bungalow, blending heritage and finesse to delight discerning palates.</p>
+          <p class="meta">Mar 15, 2025 • 2 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://images.timesnownews.com/thumb/msid-151356635,thumbsize-78338,width-1280,height-720,resizemode-75/151356635.jpg" alt="Award trophy on table" class="side-image" />
+            <div class="side-content">
+              <h4>Top Chef Leadership Award</h4>
+              <p>Awards • 1 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8zdAbQV4m3PpDVdO8rVb9w-2T5Wd7nWECmg&s" alt="Celebration toast" class="side-image" />
+            <div class="side-content">
+              <h4>Team Bungalow Celebrates Together</h4>
+              <p>Culture • 1 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6R5g9tIccryghoIoZOvwxeC_b15ksECAQXw&s" alt="Award plaque" class="side-image" />
+            <div class="side-content">
+              <h4>Fine Dining Recognition Plaque</h4>
+              <p>Recognition • 1 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Right -->
+    <div class="gallery-card right-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFiBQL3ItqgD-ehfzk2cHQ9vN3y8kttBiyFA&s" alt="Design award trophy" class="featured-image" />
+          <span class="tag">Design & Ambience</span>
+          <h3>IDA Award for Restaurant Design 2024</h3>
+          <p>Celebrated for Bungalow’s blend of modern design with traditional Indian aesthetics.</p>
+          <p class="meta">Dec 10, 2024 • 3 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLrucDXn5vEsb5H00DBsUxRKuQAo_2T0kfpQ&s" alt="Architectural sketch" class="side-image" />
+            <div class="side-content">
+              <h4>Sketches Behind the Design</h4>
+              <p>Behind the Scenes • 2 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTnZFv7vGrrlp6aepDNKxGtRDM3fRYhIw1uw&s" alt="Award certificate" class="side-image" />
+            <div class="side-content">
+              <h4>IDA Certificate Unveiled</h4>
+              <p>Gallery • 1 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI2QNTcFUimJHqgPzRqytm6BkwaoUSjhBJxA&s" alt="Interior design details" class="side-image" />
+            <div class="side-content">
+              <h4>Design Details Spotlight</h4>
+              <p>Insight • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Left -->
+    <div class="gallery-card left-card">
+      <div class="latest-stories">
+        <div class="featured-story">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_IL7Ddsfdw2-qqtmdIuKMFm0n6FqiHD08pg&s" alt="People's Choice trophy" class="featured-image" />
+          <span class="tag">People’s Choice</span>
+          <h3>People’s Choice: Best New Restaurant 2025</h3>
+          <p>Voted top new dining destination by readers of Gourmet Weekly.</p>
+          <p class="meta">Feb 05, 2025 • 2 min read</p>
+        </div>
+
+        <div class="side-stories">
+          <div class="side-story">
+            <img src="https://www.opentable.com/blog/wp-content/uploads/sites/108/2020/09/kingston-11_bethaniehines-15-1.jpg" alt="Crowd clapping" class="side-image" />
+            <div class="side-content">
+              <h4>Community's Standing Ovation</h4>
+              <p>Community • 1 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://assets.thehansindia.com/h-upload/2025/04/08/1540533-celebritymasterchefvikasgaurav17441195000241744119515806.webp" alt="Celebratory confetti" class="side-image" />
+            <div class="side-content">
+              <h4>Confetti Moments</h4>
+              <p>Festivity • 1 min read</p>
+            </div>
+          </div>
+
+          <div class="side-story">
+            <img src="https://restaurantindia.s3.ap-south-1.amazonaws.com/s3fs-public/2025-01/Untitled%20design%20-%202024-12-30T181714.738.jpg" alt="Magazine feature" class="side-image" />
+            <div class="side-content">
+              <h4>Gourmet Weekly Feature Spread</h4>
+              <p>Press • 2 min read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+  <footer class="footer">
+    <p>&copy; 2025 <span style="color: #F4A300; font-weight: 600;">Bungalow Restaurant</span>. All Rights Reserved.</p>
+  </footer>
+</body>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+ function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            const cartCountElem = document.getElementById("cart-count");
+            if (cartCountElem) cartCountElem.innerText = count;
+        }
+
+  function addToCart(name, price, image) {
+    const existingItemIndex = cart.findIndex(item => item.name === name);
+    if (existingItemIndex !== -1) {
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      cart.push({ name, price, image, quantity: 1 });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    alert(`${name} added to cart!`);
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    showCart();
+  }
+
+  function changeQuantity(index, delta) {
+    if (!cart[index]) return;
+    cart[index].quantity = (cart[index].quantity || 1) + delta;
+    if (cart[index].quantity < 1) {
+      removeFromCart(index);
+    } else {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      showCart();
+    }
+  }
+
+  function showCart() {
+  const list = document.getElementById('cartItemsList');
+  const cartModal = document.getElementById('cartModal');
+  const subtotalEl = document.getElementById('cartSubtotal');
+  const gstEl = document.getElementById('cartGST');
+  const totalEl = document.getElementById('cartTotal');
+  const emptyMsg = document.getElementById('emptyCartMessage'); // 👈 new
+
+  if (!list || !cartModal || !subtotalEl || !gstEl || !totalEl || !emptyMsg) return;
+
+  list.innerHTML = "";
+
+  if (cart.length === 0) {
+    alert("🛒 Your cart is empty!");
+    subtotalEl.textContent = `Subtotal: ₹0`;
+    gstEl.textContent = `GST (5%): ₹0.00`;
+    totalEl.textContent = `Total: ₹0.00`;
+
+    emptyMsg.style.display = "block"; // 👈 show message
+    cartModal.classList.remove("hidden"); // 👈 still show modal
+    return;
+  }
+
+  emptyMsg.style.display = "none"; // 👈 hide empty message
+
+  let subtotal = 0;
+
+  cart.forEach((item, index) => {
+    const quantity = item.quantity || 1;
+    const itemTotal = item.price * quantity;
+    subtotal += itemTotal;
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div class="cart-item">
+        <img src="${item.image || 'https://via.placeholder.com/50'}" class="cart-img" alt="${item.name}">
+        <div class="item-details">
+          <strong>${item.name}</strong><br>₹${item.price} × ${quantity} = ₹${itemTotal}
+        </div>
+        <div class="cart-controls">
+          <button onclick="changeQuantity(${index}, -1)">–</button>
+          <button onclick="changeQuantity(${index}, 1)">+</button>
+          <span class="remove-item" onclick="removeFromCart(${index})">&times;</span>
+        </div>
+      </div>
+    `;
+    list.appendChild(li);
+  });
+
+  const gst = subtotal * 0.05;
+  const total = subtotal + gst;
+
+  subtotalEl.textContent = `Subtotal: ₹${subtotal}`;
+  gstEl.textContent = `GST (5%): ₹${gst.toFixed(2)}`;
+  totalEl.textContent = `Total: ₹${total.toFixed(2)}`;
+
+  cartModal.classList.remove("hidden");
+}
+
+
+  function closeCart() {
+    document.getElementById("cartModal").classList.add("hidden");
+  }
+
+  function placeOrder() {
+    window.location.href = "reservation.html";
+  }
+
+  // Run at start
+  updateCartCount();
+</script>
+<script>
+  // Highlight current page in navbar
+  const navLinks = document.querySelectorAll("nav ul li a");
+  const currentPage = window.location.pathname.split("/").pop(); // get file name
+
+  navLinks.forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.classList.add("active");
+    }
+  });
+</script>
+
+</html>
