@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bungalow Restaurant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+      --body-color: #fdf8f2;
+      --text-color: #2B2B2B;
+      --primary: #1E3D2F;
+      --accent: #F4A300;
+      --card-bg: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+      /* Adjust based on your sticky buttons height */
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #1E3D2F;
+      padding: 15px 30px;
+      z-index: 100;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
+    .navbar .logo {
+      font-family: 'Cinzel', serif;
+      color: #F4A300;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .navbar ul li a.active,
+    .navbar ul li a:hover {
+      color: #F4A300;
+      /* Highlight color */
+    }
+
+    #cart-button {
+      background: #F4A300;
+      color: #1E3D2F;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 8px 11px;
+      border-radius: 100px;
+      /* border: 2px solid #fff; */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 20px;
+      transition: background 0.3s ease;
+    }
+
+    #cart-button:hover {
+      background: #e49300;
+      transform: translateY(-2px);
+    }
+
+    #cart-count {
+      /* background:#e49300; */
+      color: #000;
+      padding: 2px 8px;
+      font-size: 14px;
+      border-radius: 30px;
+      font-weight: bold;
+    }
+
+     /* General Body Styles */
+    body {
+      font-family: system-ui, sans-serif;
+      background: var(--body-color);
+      color: var(--text-color);
+      /* padding-top: 90px; */
+      padding-top: 130px;
+      /* Adjust to fit your layout */
+
+    }
+        .heading-wrapper {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .press-reviews h2 {
+            font-size: 5.5em;
+            /* Try 5.5 or more */
+            color: #F4A300 !important;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-top: -60px;
+            line-height: 1.2;
+            /* Optional for spacing control */
+        }
+
+
+        .press-reviews .tagline {
+            font-size: 1.1em;
+            color: #2B2B2B;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            margin-top: -40px;
+        }
+
+        .press-grid {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .press-block {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-top: -20px;
+        }
+
+        .press-block.reverse {
+            grid-template-columns: 1fr 2fr;
+        }
+
+        .press-text h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .press-text p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .press-text .source {
+            font-weight: bold;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .press-image img {
+            width: 100%;
+            height: 300px;
+            margin-top: 78px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            object-fit: cover;
+        }
+
+        @media (max-width: 900px) {
+
+            .press-block,
+            .press-block.reverse {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .press-block.reverse .press-image {
+                order: -1;
+            }
+        }
+
+        /* Add spacing and visual separation between title and detail */
+        .press-block {
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            border-left: 8px solid #F4A300;
+        }
+
+        .press-block:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Alternate color for reversed blocks */
+        .press-block.reverse {
+            background-color: #fffdf5;
+            border-left: 8px solid #fffdf5;
+            border-right: 8px solid #D88C5E;
+        }
+
+        /* Add spacing between title and paragraph */
+        .press-text h3 {
+            margin-bottom: 40px;
+            font-size: 24px;
+            color: #1E3D2F;
+        }
+
+        /* Add spacing between paragraph and source */
+        .press-text p {
+            font-size: 17px;
+            line-height: 1.75;
+            margin-bottom: -20px;
+            color: #444;
+        }
+
+        .press-text .source {
+            margin-top: 40px;
+            font-style: italic;
+            color: #A85B3B;
+        }
+
+        /* More spacing between sections */
+        .press-grid {
+            gap: 40px;
+        }
+
+        /* Press section title styling */
+        .press-reviews h2 {
+            font-size: 42px;
+            margin-bottom: 50px;
+            color: #D88C5E;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .press-block {
+                padding: 20px;
+                border-left: none;
+                border-top: 5px solid #F4A300;
+            }
+        }
+
+        .press-block {
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+        }
+
+
+        .review-section {
+            padding: 120px 20px 60px;
+            text-align: center;
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .review-heading {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            margin-top: -90px;
+            margin-left: 140px;
+        }
+
+        .review-heading .main-title {
+            font-family: SweetSansText, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+                "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .review-heading .sub-title {
+            font-family: SweetSansText, system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+                "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            color: #555555;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+
+        .review-heading .recommend-line {
+            font-size: 16px;
+            color: #666;
+            font-style: normal;
+            margin-top: 0;
+        }
+
+        .arrow-banner {
+            background-color: #D88C5E;
+            display: inline-block;
+            padding: 15px 100px;
+            clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0% 100%, 5% 50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .review-subtitle {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .note-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .review-card {
+            background-color: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 340px;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .review-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
+        }
+
+        .reviewer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .reviewer-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #1f2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .review-date {
+            font-size: 0.9em;
+            color: #888;
+            white-space: nowrap;
+        }
+
+        .review-text {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .review-stars {
+            font-size: 18px;
+            color: #fbbf24;
+            /* golden yellow */
+            margin: 4px 0;
+            font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+        }
+
+        .recommendation-text {
+            font-size: 0.95em;
+            color: #b36b00;
+            background-color: #fff8e1;
+            border: 1px solid #ffd180;
+            border-radius: 20px;
+            padding: 6px 14px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 500;
+            line-height: 1.4;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .submit-review-btn {
+            margin-top: 50px;
+            padding: 10px 20px;
+            font-family: 'Indie Flower', cursive;
+            font-size: 18px;
+            background-color: #fbbf24;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .popup-content {
+            background-color: #fffaf0;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            font-size: 18px;
+            color: #333;
+            font-family: 'Indie Flower', cursive;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #444;
+        }
+
+        .less-btn {
+            margin-top: 15px;
+            background: none;
+            border: none;
+            color: #d97706;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-review-btn {
+            margin-top: 50px;
+            padding: 10px 20px;
+            font-family: 'Indie Flower', cursive;
+            font-size: 18px;
+            background-color: #fbbf24;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .review-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff7ed;
+            padding: 30px;
+            border-radius: 14px;
+            max-width: 480px;
+            width: 90%;
+            z-index: 1001;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .review-form.active {
+            display: block;
+        }
+
+        #formOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+
+
+        .review-form input,
+        .review-form textarea,
+        .review-form select {
+            width: 100%;
+            margin: 8px 0;
+            padding: 8px;
+            font-family: inherit;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        /* Reviews Section Styles - Integrated from previous code */
+        /* Adjusted background and text colors to fit your theme */
+        .reviews-section {
+            padding: 10px 0 60px 0;
+            /* Increased top padding to clear fixed navbar */
+            text-align: center;
+            background-color: var(--body-color);
+            /* Using your body color */
+            color: var(--text-color);
+            /* Using your text color */
+            /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);*/
+            margin-top: 0;
+            /* No extra margin top as padding is used */
+            border-radius: 0;
+            /* Full width section */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .reviews-section h2 {
+            font-size: 2.8em;
+            color: #F4A300;
+            /* Using your gold accent color */
+            margin-bottom: 10px;
+           
+            font-family: 'Cinzel', serif;
+            /* Using your logo font for consistency */
+        }
+
+        .reviews-section .tagline {
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-bottom: 40px;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /*review table */
+        .review-summary {
+            font-family: 'Segoe UI', sans-serif;
+            background: #fff;
+            padding: 50px 60px;
+            border-radius: 20px;
+            max-width: 1100px;
+            margin: 80px auto;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .review-header h2 {
+            font-size: 32px;
+            color: #1f2937;
+        }
+
+        .date-range {
+            font-size: 15px;
+            color: #666;
+            background: #f3f4f6;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 40px;
+        }
+
+        .review-box {
+            background: #fff;
+            padding: 0;
+        }
+
+        .review-box .label {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .review-box h3 {
+            font-size: 36px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #111;
+        }
+
+        .growth {
+            font-size: 14px;
+            color: #16a34a;
+            background: #dcfce7;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .stars {
+            font-size: 24px;
+            color: #fbbf24;
+        }
+
+        .rating-breakdown .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .rating-row span:first-child {
+            width: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .rating-row span:last-child {
+            font-size: 15px;
+            color: #333;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .rating-row .bar {
+            flex: 1;
+            height: 14px;
+            border-radius: 10px;
+            background: #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rating-row .bar::before {
+            content: '';
+            display: block;
+            height: 100%;
+            border-radius: 10px;
+            background-color: currentColor;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .rating-row.five .bar::before {
+            width: 90%;
+            color: #10b981;
+            /* Emerald Green */
+        }
+
+        .rating-row.four .bar::before {
+            width: 60%;
+            color: #3b82f6;
+            /* Blue */
+        }
+
+        .rating-row.three .bar::before {
+            width: 30%;
+            color: #facc15;
+            /* Amber */
+        }
+
+        .rating-row.two .bar::before {
+            width: 15%;
+            color: #f97316;
+            /* Orange */
+        }
+
+        .rating-row.one .bar::before {
+            width: 0%;
+            color: #ef4444;
+            /* Red */
+        }
+        .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: #fef5e7  ;
+      /* Soft pastel pink/cream background */
+      padding: 30px;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #F4A300;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .modal-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .modal-content ul li {
+      background: #f9e79f  ;
+      padding: 10px 15px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .modal-content p {
+      margin: 5px 0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background-color: #1E3D2F;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .modal-content button:hover {
+      background-color: #F4A300;
+    }
+
+    .modal-content .close {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 26px;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .remove-item {
+      color: red;
+      font-weight: bold;
+      margin-left: 10px;
+      cursor: pointer;
+      float: right;
+    }
+    .cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background: #f9e79f ;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.cart-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.item-details {
+  flex: 1;
+  font-size: 14px;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-controls button {
+  background-color: #ff70a6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-controls button:hover {
+  background-color: #e64980;
+}
+
+.remove-item {
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+        /* Footer */
+        .footer {
+            background-color: #1E3D2F;
+            text-align: center;
+            padding: 20px;
+            color: #F9F5EC;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+                alt="leaf icon" style="max-height: 28px;" />
+
+
+            <span style="color: #F4A300;">BUNGALOW</span>
+
+
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAMAAACxiD++AAAAUVBMVEVHcExXV0VgXklqZ1CBeFmQh2eom3YAJisAKC0rOjS7q4VDSTtOU0Pt16oAKi4bMC7p16Q2QThSVkYyPzg/RjtcXEaajmxnZE53a053cloNKiwNHiXsAAAAGnRSTlMAoY59SlEz////I+zHE///Cvq98NTfQmlUZ19FGHgAAADUSURBVHgB1ZJFggMxDATbKHlAzjD8/58hhem4m9TFIAb8FMZa5/UanLUm4gFviCkFoCiJqfL1Cx8snOOmIeEKryiyCLWWRDjiJR0Lp5JF0uatgjDLRwXlHxV6VRBu8BpLqkDt3e/1WjdHF5yKmz/k+uZVkgg1EVcG5Dt/hu79jxkd9dOsLCPQN0AMyjyZnA+pMx3pJzPUk8VgXEUKcwNzrs3isAthGUYAS74UVOejxjrhwDIMWlY4fnOOukGcPJS01nqJDTE1o94nf007XK5+GfEj7ADClg4ZlRlwUwAAAABJRU5ErkJggg=="
+                alt="leaf icon" style="max-height: 28px;" />
+        </div>
+
+       <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="review.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div id="cart-button" onclick="showCart()">
+        🛒 <span id="cart-count">0</span>
+      </div>
+    </nav>
+    </header>
+    <!-- 🛒 Cart Modal -->
+  <div id="cartModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeCart()">&times;</span>
+      <h3>🧾 Your Order Summary</h3>
+      <ul id="cartItemsList"></ul>
+       <p id="emptyCartMessage" style="display: none; text-align:center; padding: 20px;">🛒 Your cart is currently empty.</p>
+      <p id="cartSubtotal"></p>
+      <p id="cartGST"></p>
+      <p id="cartTotal"></p>
+      <button onclick="placeOrder()">Order Now</button>
+    </div>
+  </div>
+    <section class="press-reviews">
+        <div class="heading-wrapper">
+            <h2>What the World’s Leading Voices Say About Bungalow by Vikas Khanna</h2>
+            <p class="tagline">Celebrated voices share their experience of Vikas Khanna’s timeless culinary journey.</p>
+
+        </div>
+
+
+
+
+        <div class="press-grid">
+
+            <!-- Example Block Format -->
+            <div class="press-block">
+                <div class="press-text">
+                    <h3>“Bungalow Proves a Celebrity Chef Can Still Draw a Crowd”</h3>
+                    <p>When Vikas Khanna opened Bungalow in New York, expectations were sky-high — and they were
+                        absolutely
+                        met.
+                        The restaurant quickly became one of NYC’s toughest reservations, booked weeks in advance. The
+                        reviewer
+                        praises its strong, rooted identity: showcasing regional Indian flavors in a modern, elevated
+                        format. The
+                        menu reflects dishes from across India, including rich Lucknowi lamb chops, Bihari sattu-stuffed
+                        rotis, and
+                        a beautifully layered biryani.
+                        Each dish arrives with storytelling finesse, but not all praise is universal — the yogurt kebab
+                        was
+                        described as “too ornamental” and a few plating choices leaned into theatrics. However, the
+                        ambience,
+                        service, and Khanna’s signature hospitality sealed the deal. His star power from MasterChef
+                        India
+                        and his
+                        reputation as a humanitarian have made this more than a restaurant — it's a cultural event. The
+                        article
+                        closes by calling Bungalow a place “where food meets philosophy.”</p>
+                    <p class="source">Source: Grub Street – March 2024</p>
+                </div>
+                <div class="press-image">
+                    <img src="https://blog.resy.com/wp-content/uploads/2024/03/Collage-All-food-800x450.jpg"
+                        alt="Review Image 1">
+                </div>
+            </div>
+
+            <div class="press-block reverse">
+                <div class="press-image">
+                    <img src="https://images.indianexpress.com/2024/12/chef-vikas_2.jpeg" alt="Review Image 2">
+                </div>
+                <div class="press-text">
+                    <h3>“Bungalow Wins Michelin Bib Gourmand in 2024”</h3>
+                    <p>Bungalow by Vikas Khanna proudly received the Michelin Bib Gourmand Award in 2024, joining the
+                        ranks
+                        of
+                        global culinary excellence. The honor recognizes restaurants that serve high-quality food at
+                        reasonable
+                        prices — and Bungalow was celebrated for doing just that. The Michelin team praised the
+                        restaurant's
+                        “delicate presentation” and “soulful execution” of Indian staples like seekh kebabs, dal, and
+                        poori-aloo.
+                        Chef Khanna took to social media to dedicate the award to his late sister Radhika, writing that
+                        the
+                        restaurant is “a promise kept to his family and his roots.” The recognition was not only a
+                        professional win
+                        but also a deeply emotional moment for him and his team. Bungalow stood out among more than 400
+                        restaurants
+                        in New York, a testament to Khanna’s ability to merge nostalgia, elegance, and story-driven food
+                        in
+                        one
+                        space.</p>
+                    <p class="source">Source: Indian Express – April 2024</p>
+                </div>
+            </div>
+
+            <div class="press-block">
+                <div class="press-text">
+                    <h3>“Shah Rukh Khan Visits Bungalow, Sparks Emotional Tribute”</h3>
+                    <p>In a major global moment, Amazon founder Jeff Bezos and his partner Lauren Sánchez dined at
+                        Bungalow
+                        and
+                        called the experience a “pilgrimage.” Their visit was widely covered by Indian and international
+                        media. They
+                        enjoyed a 9-course tasting menu that included black rice pudding, Bihari rotis, and
+                        sattu-stuffed
+                        kulchas —
+                        each dish curated to showcase India’s diverse culinary landscape.
+                        Bezos reportedly said that the experience felt like “a journey through India’s soul,”
+                        appreciating
+                        both the
+                        flavor and the storytelling that came with each dish. Chef Khanna personally presented some of
+                        the
+                        courses
+                        and shared his emotional backstory. Sánchez called the ambiance “dreamlike,” praising the
+                        flower-filled
+                        space and nostalgic decor. The visit was seen as a moment of validation for Khanna’s mission to
+                        bring
+                        soulful Indian cuisine into fine-dining conversations globally.</p>
+                    <p class="source">Source: Indian Express – June 2024</p>
+                </div>
+                <div class="press-image">
+                    <img src="https://images.indianexpress.com/2024/12/lkkcn.jpg" alt="Review Image 3">
+                </div>
+            </div>
+
+            <div class="press-block reverse">
+                <div class="press-image">
+                    <img src="https://www.hindustantimes.com/ht-img/img/2024/12/14/1600x900/Jeff_Bezos_at_Vikas_Khannas_Bungalow_in_NY_1734191935187_1734191935535.jpg"
+                        alt="Review Image 4">
+                </div>
+                <div class="press-text">
+                    <h3>“Jeff Bezos & Lauren Sánchez Call Dining at Bungalow a 'Pilgrimage'”</h3>
+                    <p>In a major global moment, Amazon founder Jeff Bezos and his partner Lauren Sánchez dined at
+                        Bungalow
+                        and
+                        called the experience a “pilgrimage.” Their visit was widely covered by Indian and international
+                        media. They
+                        enjoyed a 9-course tasting menu that included black rice pudding, Bihari rotis, and
+                        sattu-stuffed
+                        kulchas —
+                        each dish curated to showcase India’s diverse culinary landscape.
+                        Bezos reportedly said that the experience felt like “a journey through India’s soul,”
+                        appreciating
+                        both the
+                        flavor and the storytelling that came with each dish. Chef Khanna personally presented some of
+                        the
+                        courses
+                        and shared his emotional backstory. Sánchez called the ambiance “dreamlike,” praising the
+                        flower-filled
+                        space and nostalgic decor. The visit was seen as a moment of validation for Khanna’s mission to
+                        bring
+                        soulful Indian cuisine into fine-dining conversations globally.
+
+                    </p>
+                    <p class="source">Source: Times of India – May 2024</p>
+                </div>
+            </div>
+
+            <div class="press-block">
+                <div class="press-text">
+                    <h3>“The Office Star Jenna Fischer Dines at Bungalow, Calls It 'Magical'”</h3>
+                    <p>Actress Jenna Fischer, best known for her role as Pam in The Office, visited Bungalow by Vikas
+                        Khanna
+                        and
+                        couldn’t stop raving about the experience. In a series of Instagram Stories, she described the
+                        restaurant as
+                        “magical and deeply moving.” She shared photos of her meal, which included a spice-roasted
+                        pineapple
+                        starter, rose gulkand cheesecake, and Khanna’s signature yogurt kebab.
+                        Fischer called the dishes “art on a plate” and praised the staff for their grace and
+                        hospitality.
+                        She was
+                        especially touched by Khanna’s personal greeting and his passion for preserving cultural
+                        authenticity. Her
+                        visit sparked a wave of interest among foodies and Indian diaspora communities in NYC. Media
+                        described the
+                        moment as proof of how Indian cuisine is becoming an essential part of the global fine-dining
+                        narrative.”
+                    </p>
+                    <p class="source">Source: NDTV – April 2024</p>
+                </div>
+                <div class="press-image">
+                    <img src="https://curlytales.com/wp-content/uploads/2024/10/Pam-From-The-Office-AKA-Jenna-Fischer-Enjoys-Meal-Of-A-Lifetime-At-Chef-Vikas-Khannas-Bungalow-In-NYC-1280x720.jpg"
+                        alt="Review Image 5">
+                </div>
+            </div>
+
+            <div class="press-block reverse">
+                <div class="press-image">
+                    <img src="https://d2he8nskrbhxwq.cloudfront.net/upload/photos/2024/04/eTCCXp1oMhTz4nqvYM5F_04_cb3ab8710d9f4a36cda4bf08d7fbaacc_image.jpg"
+                        alt="Review Image 6">
+                </div>
+                <div class="press-text">
+                    <h3>“A tribute to tradition — Vikas Khanna’s last masterpiece.”</h3>
+                    <p>In this moving feature, The Indian Express calls Bungalow “a tribute to tradition,” labeling it
+                        Vikas
+                        Khanna’s last masterpiece. The review highlights the soulful collaboration between Khanna and
+                        designer Jimmy
+                        Rizvi, who have together created a space that celebrates India’s culinary legacy with elegance.
+                        The article dives deep into how Bungalow goes beyond fine dining — it’s an immersive
+                        storytelling
+                        experience. From handcrafted woodwork to classic patterns and soft lighting, every element
+                        whispers
+                        of
+                        India’s rich heritage. The menu pays homage to regional cuisines with a modern touch, but never
+                        loses its
+                        cultural authenticity.
+                        The review describes the experience as “timeless,” and Khanna’s personal journey — from Amritsar
+                        to
+                        Michelin
+                        honors — echoes in every dish. The restaurant is seen as a cultural and emotional landmark.</p>
+                    <p class="source">Source: The Indian Express</p>
+                </div>
+            </div>
+
+            <div class="press-block">
+                <div class="press-text">
+                    <h3>“Dining here felt like coming home in a dream.” — Sonam Kapoor</h3>
+                    <p>Bollywood star Sonam Kapoor shared her deeply personal experience dining at Bungalow, describing
+                        it
+                        as
+                        “coming home in a dream.” In her words, the ambiance felt warm and nostalgic — like being
+                        embraced
+                        by India
+                        while sitting in the heart of New York.
+                        She praised the staff’s heartfelt hospitality and the emotional power behind the food. Her
+                        favorite
+                        dishes
+                        were reportedly the Dal Bungalow and the Beetroot Tikki, both of which reminded her of family
+                        traditions.
+                        Kapoor emphasized how Chef Khanna’s food is rooted in memory and emotion — not just technique.
+                        She
+                        concluded
+                        her post saying she left the restaurant with a full heart, feeling like she had traveled back in
+                        time
+                        through flavors.</p>
+                    <p class="source">Source: Sonam Kapoor</p>
+                </div>
+                <div class="press-image">
+                    <img src="https://i.pinimg.com/736x/46/e6/2c/46e62c1c1a774edf9560f58d4e5c7168.jpg"
+                        alt="Review Image 7">
+                </div>
+            </div>
+
+            <div class="press-block reverse">
+                <div class="press-image">
+                    <img src="https://assets.vogue.in/photos/65fd807672b6c6ce6f2f64c8/16%3A9/w_6496%2Ch_3654%2Cc_limit/3P4A9827.jpg"
+                        alt="Review Image 8">
+                </div>
+                <div class="press-text">
+                    <h3>“India’s most beautiful restaurant of 2024.”</h3>
+                    <p>In a glowing feature, Vogue Lifestyle named Bungalow “India’s most beautiful restaurant of 2024.”
+                        The
+                        design, led by Shaila Rizvi, merges modern Indian elegance with the feeling of an old-world
+                        haveli.
+                        From floral ceiling canopies to carved wood, hand-painted motifs, and natural light, every inch
+                        of
+                        the
+                        restaurant is curated to create comfort and awe. The dining room is surrounded by vintage
+                        mirrors,
+                        soft
+                        blush hues, and traditional textures, making it an ideal mix of charm and chic.
+                        The article notes that the visual experience perfectly complements the rich, soul-driven food.
+                        Bungalow is
+                        not just a place to eat — it’s a place to feel, reflect, and be inspired. Vogue applauds the
+                        restaurant for
+                        redefining luxury in a way that’s personal and poetic.
+
+                    </p>
+                    <p class="source">Source: Vogue Lifestyle</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section class="review-summary">
+        <div class="review-header">
+            <h2>Reviews</h2>
+            <div class="date-range">March 2021 - February 2022</div>
+        </div>
+
+        <div class="review-grid">
+            <!-- Total Reviews -->
+            <div class="review-box">
+                <p class="label">Total Reviews</p>
+                <h3>10.0k</h3>
+                <span class="growth">⬆ 21%</span>
+                <p class="desc">Growth in reviews on this year</p>
+            </div>
+
+            <!-- Average Rating -->
+            <div class="review-box">
+                <p class="label">Average Rating</p>
+                <h3>4.0 <span class="stars">★★★★☆</span></h3>
+                <p class="desc">Average rating on this year</p>
+            </div>
+
+            <!-- Rating Breakdown -->
+            <div class="rating-breakdown">
+                <div class="rating-row five"><span>5</span>
+                    <div class="bar"></div><span>2.0k</span>
+                </div>
+                <div class="rating-row four"><span>4</span>
+                    <div class="bar"></div><span>1.0k</span>
+                </div>
+                <div class="rating-row three"><span>3</span>
+                    <div class="bar"></div><span>500</span>
+                </div>
+                <div class="rating-row two"><span>2</span>
+                    <div class="bar"></div><span>200</span>
+                </div>
+                <div class="rating-row one"><span>1</span>
+                    <div class="bar"></div><span>0k</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="reviews-section">
+        <div class="container">
+            <h2>What Our Guests Say About Bunglow</h2>
+            <p class="tagline">Authentic feedback from those who've experienced Vikas Khanna's culinary magic.</p>
+
+            <div class="reviews-grid" id="reviewsGrid">
+            </div>
+            <div class="note-container" id="notes">
+                <!-- Sticky Notes will be injected here -->
+            </div>
+
+            <button class="submit-review-btn" onclick="toggleForm()">Submit Your Own Review</button>
+
+            <div class="review-form" id="reviewForm">
+                <input type="text" id="name" placeholder="Your Name">
+                <input type="date" id="date">
+                <select id="rating">
+                    <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+                    <option value="4">⭐️⭐️⭐️⭐️</option>
+                    <option value="3">⭐️⭐️⭐️</option>
+                    <option value="2">⭐️⭐️</option>
+                    <option value="1">⭐️</option>
+                </select>
+                <textarea id="reviewText" placeholder="Write your review here..."></textarea>
+                <input type="text" id="recommendation" placeholder="People love (e.g., Khichdi of India)" />
+
+                <button class="submit-review-btn" onclick="addReview()">Add Review</button>
+            </div>
+    </section>
+
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <button class="close-btn" onclick="closePopup()">×</button>
+            <div id="popup-text"></div>
+            <button class="less-btn" onclick="closePopup()">Show Less</button>
+        </div>
+    </div>
+    <div id="formOverlay" onclick="closeForm()"></div>
+    </section>
+
+    </div>
+    </section>
+
+
+
+
+    <footer class="footer">
+        <p>&copy; 2025 <span style="color: #F4A300; font-weight: 600;">Bungalow Restaurant</span>. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        const notesData = [
+
+            {
+                name: "Isha Mehra",
+                date: "2025-07-01",
+                rating: 5,
+                preview: "Dining at Bungalow by Vikas Khanna was nothing short of magical. The ambiance wrapped me in warmth, and the food touched my soul. From the moment I entered, I knew I was in for something unique — and I was right.......",
+                full: `Dining at Bungalow by Vikas Khanna was nothing short of magical. The ambiance immediately put me at ease — soft music, elegant design, and a space that feels deeply inspired by Indian heritage. There’s a calm sophistication that surrounds you as you walk in.
+
+The food was absolutely delicious. Each dish was thoughtfully prepared and plated like a piece of art. The Paan Patta Chaat was one of the highlights — crunchy, tangy, and bursting with flavor. The mains carried the soul of home-cooked Indian food, but elevated to fine dining levels.
+
+Service was warm and attentive — the staff genuinely seemed proud to serve and talk about each dish. That enthusiasm made the whole evening more personal and memorable.
+
+You can feel Vikas Khanna’s presence in every corner of the restaurant. It’s a space filled with emotion, passion, and pride for India’s culinary roots. Highly recommend for a memorable meal — it’s a true celebration of flavor and finesse.`,
+                color: "#fff",
+                peoplerecommentation: "Yogurt Kebab"
+            },
+            {
+                name: "Karan Thakur",
+                date: "2025-07-02",
+                rating: 5,
+                preview: "What a stunning experience! Bungalow by Vikas Khanna completely exceeded expectations. The food, the atmosphere, the service — everything blended into a magical evening. I couldn’t have asked for more.",
+                full: `What a stunning experience! Bungalow by Vikas Khanna completely exceeded my expectations. The design of the space is calming and luxurious — a modern Indian aesthetic done just right. It feels like a fine-dining home.
+
+The food? Absolutely divine. Each plate arrived with care, and every bite felt intentional. I tried the Amritsari Fish and the Beetroot Tikki — both full of depth and texture. The desserts were equally impressive — especially the Nariyal Rasgulla with saffron cream.
+
+The staff were kind, courteous, and incredibly knowledgeable. Their passion made the evening even more engaging and enjoyable.
+
+You can see how much heart went into this restaurant — it’s not just about food, it’s about culture, emotion, and storytelling. This is one of those rare places where everything comes together beautifully.`,
+                color: "#fff",
+                peoplerecommentation: "Anarkali Chicken"
+            },
+            {
+                name: "Tanvi Sharma",
+                date: "2025-07-03",
+                rating: 5,
+                preview: "Truly unforgettable. My dinner at Bungalow by Vikas Khanna felt like an embrace — filled with emotion, elegance, and rich flavors. The space was warm and graceful, and so was the food.",
+                full: `Truly unforgettable. My dinner at Bungalow by Vikas Khanna felt like a warm embrace — rich in culture, elegance, and passion. The interiors are stunning, with a color palette that soothes and elevates. I loved the subtle Indian touches woven into a modern space.
+
+Each course was a work of art. The Bhuna Gosht was packed with bold flavors and the Khichdi of India was an emotional experience in itself — so humble yet so refined. It reminded me of home, but with a chef’s brilliance.
+
+The staff was attentive and warm, making sure we understood the story behind every dish. It made everything more meaningful.
+
+Chef Vikas Khanna’s soul shines through every part of this restaurant. You can feel the love in the food and the pride in the presentation. Highly recommend this spot to anyone looking for something special and soulful.`,
+                color: "#fff",
+                peoplerecommentation: "Lamb Seekh Kabab"
+            },
+
+            {
+                name: "Rahul Menon",
+                date: "2025-07-04",
+                rating: 5,
+                preview: "An extraordinary culinary experience! The moment I stepped into Bungalow...",
+                full: `An extraordinary culinary experience! The moment I stepped into Bungalow, I felt transported — the décor, the lighting, and the aroma of fresh spices immediately set the tone for something beautiful. The environment is luxurious, yet deeply comforting.
+
+The food was just exceptional. The Paneer Tikka had a perfect char, and the Malai Kofta was soft, flavorful, and served in a silky gravy that I couldn’t stop savoring. Every dish came with a story and was plated with elegance.
+
+The staff made the experience so smooth — always there with a smile, ready to explain the dishes and make recommendations.
+
+This place is a perfect reflection of Vikas Khanna’s vision — it’s artistic, soulful, and deeply Indian.
+If you’re a lover of thoughtfully prepared food and rich cultural vibes, this place is a must.`,
+                color: "#fff",
+                peoplerecommentation: "Spice-Roasted Pineapple"
+            },
+            {
+                name: "Aanya Desai",
+                date: "2025-07-05",
+                rating: 5,
+                preview: "What a delight! Dining at Bungalow by Vikas Khanna was like...",
+                full: `What a delight! Dining at Bungalow by Vikas Khanna was like stepping into a calm, fragrant dream. The ambiance is elegant yet grounded, with soft earthy textures and warm lighting that sets a perfect tone for the evening.
+
+Every dish was memorable. The Lotus Stem Chaat was crispy, tangy, and addictive, and the slow-cooked lamb curry was full of flavor and spice. The plating was beautiful, and the flavors were bold without being overwhelming.
+
+Service was seamless — the staff anticipated needs and offered kind, thoughtful recommendations. Their knowledge of the menu added so much to the experience.
+
+You don’t just eat here — you experience culture, emotion, and craftsmanship in every bite.
+Definitely one of the most soulful and satisfying meals I’ve had in years.`,
+                color: "#fff",
+                peoplerecommentation: "Kiss of Kashmir"
+            },
+            {
+                name: "Devika Rao",
+                date: "2025-07-06",
+                rating: 5,
+                preview: "Simply extraordinary. Bungalow by Vikas Khanna is not just a restaurant...",
+                full: `Simply extraordinary. Bungalow by Vikas Khanna is not just a restaurant — it’s a tribute to Indian heritage and flavor. The décor is soft and graceful, with a perfect mix of tradition and modernity. It feels intimate and special the moment you step in.
+
+The food blew me away. The signature Dal Bungalow was everything I hoped for — rich, comforting, and deeply satisfying. The starters were playful and innovative, especially the jackfruit-based dishes.
+
+The staff were courteous, always smiling, and truly passionate about the food they served. It made a big difference in how personal the whole evening felt.
+
+Vikas Khanna has created more than a menu — he’s created an emotion.
+This restaurant deserves every bit of praise it receives.`,
+                color: "#fff",
+                peoplerecommentation: "Rose Kulfi"
+            },
+            {
+                name: "Zoya Khan",
+                date: "2025-07-07",
+                rating: 5,
+                preview: "Incredible from start to finish! Bungalow by Vikas Khanna left me inspired...",
+                full: `Incredible from start to finish! Bungalow by Vikas Khanna left me inspired and full — in the best way. The space is stunning with subtle Indian motifs, soft ambient music, and a cozy yet elegant layout.
+
+The food was creative and flavorful. I loved the attention to detail in each dish. The smoked eggplant, the tamarind drizzle, the layered chutneys — every element was thoughtful and harmonized perfectly.
+
+The service was warm, never rushed, and always helpful. Our server explained the dishes beautifully and made the experience feel curated just for us.
+
+This isn’t just dining — it’s artistry.
+Highly recommend for a meaningful, elevated Indian food experience.`,
+                color: "#fff",
+                peoplerecommentation: "Molten Chocolate Cake"
+            },
+            {
+                name: "Neel Joshi",
+                date: "2025-07-08",
+                rating: 5,
+                preview: "Such a wholesome and heartwarming experience. Everything about Bungalow...",
+                full: `Such a wholesome and heartwarming experience. Everything about Bungalow by Vikas Khanna felt personal — from the warm welcome to the final bite of dessert. The interiors are sophisticated, filled with calm colors and natural textures that invite you to stay and savor.
+
+The menu was full of surprises. I loved the fusion touches and regional ingredients. The Andhra-style prawns were spicy and addictive, and the Shahi Tukda was like a royal treat.
+
+The staff went above and beyond to make sure we felt taken care of. It made the evening feel more like a celebration than just a dinner.
+
+You can tell this place was built with love and care.
+An absolute must-visit for those who appreciate thoughtful cuisine and meaningful design.`,
+                color: "#fff",
+                peoplerecommentation: "Dahi Kebab"
+            },
+            {
+                name: "Meera Bhatt",
+                date: "2025-07-09",
+                rating: 5,
+                preview: "Flawless in every way! Bungalow by Vikas Khanna gave me one of the most memorable...",
+                full: `Flawless in every way! Bungalow by Vikas Khanna gave me one of the most memorable dining experiences I’ve ever had. The ambiance was tranquil and luxurious, with a palette that made the whole space feel timeless and inviting.
+
+The food was rich with flavor and soul. Each bite felt like a journey — the flavors told stories, and the ingredients were clearly top quality. I especially loved the lentil-stuffed kulcha and the curry trio.
+
+Service was the cherry on top — warm, well-informed, and attentive to every detail.
+
+This is more than a fine-dining spot — it’s a culinary love letter to India.
+I’m already planning my next visit.`,
+                color: "#fff",
+                peoplerecommentation: "Goat & Roasted Pineapple Curry"
+            }, {
+                name: "Simran Verma",
+                date: "2025-07-10",
+                rating: 5,
+                preview: "Stepping into Bungalow felt like entering a serene retreat. The space was peaceful, the lighting soft, and the scent of spices filled the air with warmth and anticipation.",
+                full: "Stepping into Bungalow felt like entering a serene retreat. The space was peaceful, the lighting soft, and the scent of spices filled the air with warmth and anticipation. The Kandhari Paneer was a standout — tangy, sweet, and grilled to perfection. The staff took their time to explain every element of the menu, which made the experience so much more special. Easily one of the most memorable meals I’ve ever had.",
+                color: "#fff",
+                peoplerecommentation: "Yogurt Kebab"
+            },
+            {
+                name: "Aditya Roy",
+                date: "2025-07-11",
+                rating: 5,
+                preview: "A place where every corner, every aroma, and every bite tells a story. Dining here is a celebration of culture and culinary brilliance.",
+                full: "A place where every corner, every aroma, and every bite tells a story. Dining here is a celebration of culture and culinary brilliance. The Saffron Coconut Curry paired with spiced rice was both comforting and elevated. The textures, the colors, the balance — everything felt thoughtfully created. Vikas Khanna's attention to detail shines through, making this a must-visit for food lovers.",
+                color: "#fff",
+                peoplerecommentation: "Anarkali Chicken"
+            },
+            {
+                name: "Rhea Malhotra",
+                date: "2025-07-12",
+                rating: 5,
+                preview: "Bungalow by Vikas Khanna was a beautiful fusion of nostalgia and refinement. From the moment we sat down, it felt like we were being wrapped in a warm culinary hug.",
+                full: "Bungalow by Vikas Khanna was a beautiful fusion of nostalgia and refinement. From the moment we sat down, it felt like we were being wrapped in a warm culinary hug. The jackfruit biryani was aromatic and soft, with flavors that danced on the palate. The desserts were like edible jewels. It's not just dinner here — it’s memory-making.",
+                color: "#fff",
+                peoplerecommentation: "Lamb Seekh Kabab"
+            },
+            {
+                name: "Ishaan Thakkar",
+                date: "2025-07-13",
+                rating: 4,
+                preview: "A truly immersive experience — slow, thoughtful, and deeply soulful. The setting made us forget the outside world completely.",
+                full: "A truly immersive experience — slow, thoughtful, and deeply soulful. The setting made us forget the outside world completely. The server’s storytelling elevated the dishes, especially the Tandoori Broccoli which came with a tale from Chef Khanna’s childhood. I only wish the wait time between courses was a bit shorter — otherwise, everything was near perfect.",
+                color: "#fff",
+                peoplerecommentation: "Spice-Roasted Pineapple"
+            },
+            {
+                name: "Tanya Kapoor",
+                date: "2025-07-14",
+                rating: 5,
+                preview: "The entire experience was woven with grace and meaning. Even the water had tulsi and rose — every element was chosen with care.",
+                full: "The entire experience was woven with grace and meaning. Even the water had tulsi and rose — every element was chosen with care. The lotus stem chaat and saffron phirni were divine. The servers were warm, unhurried, and knowledgeable. If you value not just taste but tradition, this place is for you.",
+                color: "#fff",
+                peoplerecommentation: "Kiss of Kashmir"
+            },
+            {
+                name: "Kabir Shah",
+                date: "2025-07-15",
+                rating: 5,
+                preview: "Every moment at Bungalow was beautifully paced and soulful. The décor whispered elegance and the food sang of India’s roots.",
+                full: "Every moment at Bungalow was beautifully paced and soulful. The décor whispered elegance and the food sang of India’s roots. I tried the Kofta Nargisi and it was soft, flavorful, and rich in aroma. Each course felt like a warm tribute to home-cooked memories. This place left me full — not just in stomach, but in spirit.",
+                color: "#fff",
+                peoplerecommentation: "Dahi Kebab"
+            },
+            {
+                name: "Naina Joshi",
+                date: "2025-07-15",
+                rating: 5,
+                preview: "The atmosphere, the flavors, the hospitality — all aligned in harmony. It was more than fine dining — it was soulful dining.",
+                full: "The atmosphere, the flavors, the hospitality — all aligned in harmony. It was more than fine dining — it was soulful dining. The Dal Bungalow was the highlight, deeply satisfying and subtly smoky. I could feel Vikas Khanna’s philosophy in every bite. I’ll definitely be recommending this to everyone I know.",
+                color: "#fff",
+                peoplerecommentation: "Rose Kulfi"
+            },
+            {
+                name: "Arav Mathur",
+                date: "2025-07-15",
+                rating: 4,
+                preview: "The setting was peaceful and poetic. It’s the kind of place where you come to reconnect — with your food, your roots, and your senses.",
+                full: "The setting was peaceful and poetic. It’s the kind of place where you come to reconnect — with your food, your roots, and your senses. The Parsi-style lamb curry was incredible. I only wish portion sizes were slightly larger, but the flavor and presentation were spot on. Loved the handwritten thank-you note from the chef.",
+                color: "#fff",
+                peoplerecommentation: "Molten Chocolate Cake"
+            },
+            {
+                name: "Vanya Singh",
+                date: "2025-07-15",
+                rating: 5,
+                preview: "Everything about this place glows softly — the lamps, the staff’s smiles, the golden plates. It’s elegant without being flashy.",
+                full: "Everything about this place glows softly — the lamps, the staff’s smiles, the golden plates. It’s elegant without being flashy. I had the beetroot galouti kebabs and the baingan bharta mousse — an unforgettable combination. The flavors were subtle yet deep, just like the ambiance.",
+                color: "#fff",
+                peoplerecommentation: "Goat & Roasted Pineapple Curry"
+            },
+            {
+                name: "Dev Mehta",
+                date: "2025-07-15",
+                rating: 5,
+                preview: "There is a softness to this restaurant that stays with you. A quiet pride in every recipe, every plate, every greeting from the staff.",
+                full: "There is a softness to this restaurant that stays with you. A quiet pride in every recipe, every plate, every greeting from the staff. The food made me feel like I was being told a story with spices and textures. The tamarind glaze on the tikkis and the coconut milk foam on the dessert were unexpected and lovely. Truly one of a kind.",
+                color: "#fff",
+                peoplerecommentation: "Dahi Kebab"
+            }
+
+            // You can continue adding more...
+        ];
+
+        const notesContainer = document.getElementById('notes');
+        const popup = document.getElementById('popup');
+        const popupText = document.getElementById('popup-text');
+        const popupContent = document.querySelector('.popup-content');
+
+        function getStarString(rating) {
+            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+        }
+
+        function renderNotes() {
+            notesContainer.innerHTML = "";
+            notesData.forEach(note => {
+                const div = document.createElement('div');
+                div.className = "review-card";
+                div.style.backgroundColor = note.color;
+                div.onclick = () => showPopup(note);
+                div.innerHTML = `
+            <div class="reviewer-info">
+                <div class="reviewer-name">${note.name}</div>
+                <div class="review-date">${note.date}</div>
+            </div>
+            <div class="review-stars">${getStarString(note.rating)}</div>
+            <div class="review-text">${note.preview}</div>
+            ${note.peoplerecommentation ? `<div class="recommendation-text">🍽️ People love: ${note.peoplerecommentation}</div>` : ''}
+        `;
+                notesContainer.appendChild(div);
+            });
+        }
+
+
+        function showPopup(note) {
+            popupText.innerHTML = `
+    <div class="reviewer-info">
+        <div class="reviewer-name">${note.name}</div>
+        <div class="review-date">${note.date}</div>
+    </div>
+    <div class="review-stars">${getStarString(note.rating)}</div>
+    <div class="review-text">${note.full}</div>
+    ${note.peoplerecommentation ? `<div class="recommendation-text">🍽️ People love: ${note.peoplerecommentation}</div>` : ''}
+`;
+
+            popupContent.style.backgroundColor = note.color;
+            popup.style.display = 'flex';
+        }
+        function getStarString(rating) {
+            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+        }
+
+
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+
+        function toggleForm() {
+            const form = document.getElementById('reviewForm');
+            const overlay = document.getElementById('formOverlay');
+            const isActive = form.classList.contains('active');
+            form.classList.toggle('active');
+            overlay.style.display = isActive ? 'none' : 'block';
+        }
+
+        function closeForm() {
+            document.getElementById('reviewForm').classList.remove('active');
+            document.getElementById('formOverlay').style.display = 'none';
+        }
+
+        function addReview() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const rating = parseInt(document.getElementById('rating').value);
+            const full = document.getElementById('reviewText').value;
+            const peoplerecommentation = document.getElementById('recommendation').value;
+
+            if (name && date && rating && full) {
+                const preview = full.length > 60 ? full.substring(0, 60) + '...' : full;
+                notesData.push({ name, date, rating, full, preview, peoplerecommentation });
+                renderNotes();
+                toggleForm();
+                document.getElementById('reviewForm').reset();
+            }
+        }
+
+        renderNotes();
+    </script>
+    <script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+            const cartCountElem = document.getElementById("cart-count");
+            if (cartCountElem) cartCountElem.innerText = count;
+        }
+
+  function addToCart(name, price, image) {
+    const existingItemIndex = cart.findIndex(item => item.name === name);
+    if (existingItemIndex !== -1) {
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      cart.push({ name, price, image, quantity: 1 });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    alert(`${name} added to cart!`);
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    showCart();
+  }
+
+  function changeQuantity(index, delta) {
+    if (!cart[index]) return;
+    cart[index].quantity = (cart[index].quantity || 1) + delta;
+    if (cart[index].quantity < 1) {
+      removeFromCart(index);
+    } else {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      showCart();
+    }
+  }
+
+ function showCart() {
+  const list = document.getElementById('cartItemsList');
+  const cartModal = document.getElementById('cartModal');
+  const subtotalEl = document.getElementById('cartSubtotal');
+  const gstEl = document.getElementById('cartGST');
+  const totalEl = document.getElementById('cartTotal');
+  const emptyMsg = document.getElementById('emptyCartMessage'); // 👈 new
+
+  if (!list || !cartModal || !subtotalEl || !gstEl || !totalEl || !emptyMsg) return;
+
+  list.innerHTML = "";
+
+  if (cart.length === 0) {
+    alert("🛒 Your cart is empty!");
+    subtotalEl.textContent = `Subtotal: ₹0`;
+    gstEl.textContent = `GST (5%): ₹0.00`;
+    totalEl.textContent = `Total: ₹0.00`;
+
+    emptyMsg.style.display = "block"; // 👈 show message
+    cartModal.classList.remove("hidden"); // 👈 still show modal
+    return;
+  }
+
+  emptyMsg.style.display = "none"; // 👈 hide empty message
+
+  let subtotal = 0;
+
+  cart.forEach((item, index) => {
+    const quantity = item.quantity || 1;
+    const itemTotal = item.price * quantity;
+    subtotal += itemTotal;
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div class="cart-item">
+        <img src="${item.image || 'https://via.placeholder.com/50'}" class="cart-img" alt="${item.name}">
+        <div class="item-details">
+          <strong>${item.name}</strong><br>₹${item.price} × ${quantity} = ₹${itemTotal}
+        </div>
+        <div class="cart-controls">
+          <button onclick="changeQuantity(${index}, -1)">–</button>
+          <button onclick="changeQuantity(${index}, 1)">+</button>
+          <span class="remove-item" onclick="removeFromCart(${index})">&times;</span>
+        </div>
+      </div>
+    `;
+    list.appendChild(li);
+  });
+
+  const gst = subtotal * 0.05;
+  const total = subtotal + gst;
+
+  subtotalEl.textContent = `Subtotal: ₹${subtotal}`;
+  gstEl.textContent = `GST (5%): ₹${gst.toFixed(2)}`;
+  totalEl.textContent = `Total: ₹${total.toFixed(2)}`;
+
+  cartModal.classList.remove("hidden");
+}
+
+
+  function closeCart() {
+    document.getElementById("cartModal").classList.add("hidden");
+  }
+
+  function placeOrder() {
+    window.location.href = "reservation.html";
+  }
+
+  // Run at start
+  updateCartCount();
+</script>
+<script>
+  // Highlight current page in navbar
+  const navLinks = document.querySelectorAll("nav ul li a");
+  const currentPage = window.location.pathname.split("/").pop(); // get file name
+
+  navLinks.forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.classList.add("active");
+    }
+  });
+</script>
+</body>
+
+</html>
